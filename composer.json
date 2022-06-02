@@ -1,0 +1,46 @@
+{
+  "name": "reagordi/reagordi",
+  "description": "Reagordi PHP Framework Version 1 - Development Package",
+  "keywords": [
+    "reagordi",
+    "framework"
+  ],
+  "version": "1.0.0",
+  "homepage": "https://reagordi.com/",
+  "type": "reagordi-extension",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Sergej Rufov",
+      "email": "support@ugroup.site",
+      "homepage": "https://reagordi.com/",
+      "role": "Founder and project lead"
+    }
+  ],
+  "support": {
+    "issues": "https://bugs.ugroup.site/reagordi?state=open",
+    "forum": "https://forum.ugroup.site/reagordi",
+    "wiki": "https://dev.ugroup.site/reagordi",
+    "source": "https://github.com/reagordi/reagordi"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "replace": {
+    "reagordi/reagordi": "self.version"
+  },
+  "require": {
+    "php": ">=7.0",
+    "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "ext-ctype": "*",
+    "ext-libxml": "*",
+    "ext-simplexml": "*",
+    "ext-fileinfo": "*",
+    "ext-dom": "*",
+    "filp/whoops": "^2.14",
+    "dompdf/dompdf": "^1.2",
+    "twig/twig": "^3.0",
+    "ext-curl": "*",
+    "kilylabs/odata-1c": "^1.2"
+  }
+}

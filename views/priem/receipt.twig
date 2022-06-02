@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <style>
+        body {
+            font-size: 12px;
+            font-family: DejaVu Sans, sans-serif;
+        }
+
+        table {
+            width: 100%
+        }
+
+        table td {
+            vertical-align: top;
+            padding: 2px
+        }
+    </style>
+</head>
+<body>
+{% for i in 0..count_receipt %}
+<h2 align="center">{{ company_name }}<br/>
+    ({{ company_name_brief }})
+</h2>
+    <div style="text-align: center"><b>Тел.:</b> (4842) 52 - 18 - 34, <b>E-mail:</b> priem@ktk40.ru</div>
+<h3 align="center">РАСПИСКА № {{ Number }}</h3>
+<p>от <u>{{ fio_r }}</u></p>
+<p>на специальность (профессию) <u>{{ ПодачаЗаявлений.ПрограммаОбучения.Специальность.Code }} "{{ ПодачаЗаявлений.ПрограммаОбучения.Специальность.Description }}"
+                {% for qualification in ПодачаЗаявлений.ПрограммаОбучения.Квалификаци %}
+                    ({{ qualification.Description }})<br />
+                {% endfor %}</u></p>
+<h3 align="center">ПРИНЯТЫ ДОКУМЕНТЫ</h3>
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>№ п/п</th>
+        <th>Наименование документа</th>
+        <th>Количество</th>
+        <th>Копия</th>
+    </tr>
+    {% for document in ДокументыДляПоступления %}
+    <tr>
+        <td style="text-align: center">{{ document.LineNumber }}</td>
+        <td>{{ document.ДокументДляПоступления.Description }}
+            {% if document.ДокументДляПоступления.ТипДокумента == 'ДокументОбОбразовании' %}
+                {{ ВидДокументаОбразованияКласс }}
+            {% endif %}</td>
+        <td style="text-align: center">{{ document.ПредоставленоЭкземпляров }}</td>
+        <td style="text-align: center">{% if document.ПредоставленаКопия %}&#10004;{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>
+<div align="right">Подпись ответственного лица приемной комиссии ____________ / <u>{{ Author }}</u></div>
+</p>
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="text-align: left">
+                <b>М.П.</b>
+            </td>
+            <td style="text-align: right">
+                Дата «<u>{{ statement_date_d }}</u>» <u>{{ statement_date_m }}</u> <u>{{ statement_date_y }}</u> г
+            </td>
+        </tr>
+    </table>
+<br />
+{% if i != count_receipt %}<hr />{% endif %}
+{% endfor %}
+</body>
+</html>

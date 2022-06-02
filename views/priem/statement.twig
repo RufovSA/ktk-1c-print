@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <style>
+        body {
+            font-size: 12px;
+            font-family: DejaVu Sans, sans-serif;
+        }
+
+        table {
+            width: 100%
+        }
+
+        table td {
+            vertical-align: top;
+            padding: 2px
+        }
+    </style>
+</head>
+<body>
+<p align="center">
+    <b>{{ company_name }}</b>
+</p>
+<p align="right"><b>Регистрационный номер</b>: <u>{{ Number }}</u></p>
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <td style="width: 25%">
+            <b>Фамилия</b>
+        </td>
+        <td style="width: 25%">{{ Фамилия }}</td>
+        <td>
+            <b>Гражданство</b>
+        </td>
+        <td>{{ Гражданство }}</td>
+    </tr>
+    <tr>
+        <td>
+            <b>Имя</b>
+        </td>
+        <td>{{ Имя }}</td>
+        <td colspan="2">
+            <b>Документ, удостоверяющий личность</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Отчество</b>
+        </td>
+        <td>{{ Отчество }}</td>
+        <td colspan="2">{{ type_doc }}</td>
+    </tr>
+    <tr>
+        <td>
+            <b>Дата рождения</b>
+        </td>
+        <td>{{ ДатаРождения }}</td>
+        <td colspan="2"><b>Серия</b> {{ СерияДокументаУдостоверяющегоЛичность }}
+            <b>№</b> {{ НомерДокументаУдостоверяющегоЛичность }}</td>
+    </tr>
+    <tr>
+        <td>
+            <b>Место рождения</b>
+        </td>
+        <td>{{ МестоРождения }}</td>
+        <td colspan="2"><b>Когда и кем выдан</b> {{ ДатаВыдачиДокументаУдостоверяющегоЛичность }} {{ КемВыданДокументУдостоверяющийЛичность}}
+            <br/>{{ КодПодразделенияДокументУдостоверяющийЛичность }}</td>
+    </tr>
+    <tr>
+        <td>
+            <b>Телефон</b>
+        </td>
+        <td>
+            {% for phone in КонтактнаяИнформация %}
+                {% if phone.НомерТелефона %}
+                {{ phone.Представление }}
+                <br />
+                {% endif %}
+            {% endfor %}
+        </td>
+        <td>
+            <b>E-Mail</b>
+        </td>
+        <td>
+            {% for phone in КонтактнаяИнформация %}
+                {% if phone.АдресЭП %}
+                    {{ phone.Представление }}
+                    <br />
+                {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+{% for address in КонтактнаяИнформация %}
+    {% if address.Тип == 'Адрес' %}
+        {% if address.LineNumber == 1 %}
+            <p><b>Адрес постоянной прописки</b>: <u>{{ address.Представление }}</u></p>
+        {% elseif address.LineNumber == 2 %}
+            <p><b>Адрес фактического проживания</b>: <u>{{ address.Представление }}</u></p>
+        {% elseif address.LineNumber == 3 %}
+            <p><b>Адрес для информирования</b>: <u>{{ address.Представление }}</u></p>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+<p align="center"><b>ЗАЯВЛЕНИЕ</b></p>
+<p>Прошу принять меня на обучение по следующим программам обучения</p>
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>Специальность/Профессия</th>
+        <th>Форма обучения</th>
+        <th>Вид финансирования</th>
+        <th>Подпись</th>
+    </tr>
+    {% for specialtie in ПодачаЗаявлений %}
+        <tr>
+            <td>{{ specialtie.ПрограммаОбучения.Специальность.Code }} "{{ specialtie.ПрограммаОбучения.Специальность.Description }}"
+                {% for qualification in specialtie.ПрограммаОбучения.Квалификаци %}
+                    ({{ qualification.Description }})<br />
+                {% endfor %}</td>
+            <td>Очная форма обучения</td>
+            <td>{{ specialtie.Финансирование }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+</table>
+<p><b>О себе сообщаю следующие:</b></p>
+<p>
+    Окончил{% if Пол == 'Женский' %}а{% endif %}
+    <u>{{ НаименованиеОбразовательнойОрганизации }}</u> в <u>{{ ДатаОкончанияОбразовательнойОрганизации }}</u> году</p>
+<p>
+    <b>
+        {% if ВидДокументаОбразования == 'АттестатОсновноеОбщее' %}
+            Аттестат (9 Кл.)
+        {% else %}
+            Аттестат (11 Кл.)
+        {% endif %}
+        №
+    </b>
+    <u>{{ СерияДокументаОбразования }} {{ НомерДокументаОбразования }}</u>
+</p>
+{% if bal == 5 %}
+    <p><u>Имеею медаль ({% if ВидДокументаОбразования == 'АттестатОсновноеОбщее' %}
+            Аттестат (9 Кл.)
+        {% else %}
+            Аттестат (11 Кл.)
+            {% endif %}) с «отличием»</u></p>
+{% endif %}
+<p><b>Средний балл аттестата:</b> {{ СреднийБаллАттестата }}</p>
+{% if checkbox_olimpiada %}
+    <p><u>Являюсь победителем всероссийских олимпиад (член сборной)</u></p>
+{% endif %}
+{% if ТребуетсяОбщежитие %}
+    <p><u>Нуждаюсь в общежитие</u></p>
+{% endif %}
+<p><b>Иностранный язык</b>: <u>{{ ИзучаемыйЯзык.Description }}</u></p>
+{% if Льгота %}
+    <p><b>При поступлении имею следующие льготы</b>: <u>{{ Льгота }}</u>
+    </p>
+{% endif %}
+{% if doc_benefits %}
+    <p><b>Документы, представляющий право на льготы</b>: <u>{{ doc_benefits }}</u></p>
+{% endif %}
+{% if social_status %}
+    <p><b>Социальный статус</b>: <u>{{ social_status }}</u></p>
+{% endif %}
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>Степень родства</th>
+        <th>ФИО</th>
+        <th>Телефон</th>
+    </tr>
+    {% for parent in СоставСемьи %}
+        <tr>
+            <td>{{ parent.СтепеньРодства }}</td>
+            <td>{{ parent.ФИО }}</td>
+            <td>{{ parent.МобильныйТелефон }}</td>
+        </tr>
+    {% endfor %}
+</table>
+<br/>
+<br/>
+<div style="position: absolute;bottom:-20px;right:0;width: 100%">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="text-align: left">
+                Дата «<u>{{ statement_date_d }}</u>» <u>{{ statement_date_m }}</u> <u>{{ statement_date_y }} г.
+            </td>
+            <td style="text-align: right">
+                ____________________
+                <div style="font-size: 8px">(подпись поступающего)</div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div style="page-break-before: always;"></div>
+
+<p>
+<div style="float: left">Среднее профессиональное образование
+    получаю{% if checkbox_obraz_one %} не{% endif %} впервые
+</div>
+</p>
+<p>
+<div style="float: right;">____________________</div>
+<div style="clear: both"></div>
+<div align="right" style="font-size: 8px">(подпись поступающего)</div>
+</p>
+<p>
+<div style="float: left">С уставом, лицензией на право осуществления образовательной деятельности и свидетельством о
+    государственной аккредитации, правилами приема, правилами внутреннего трудового распорядка ознакомлен
+</div>
+<div style="clear: both"></div>
+<div style="float: right;">____________________</div>
+<div style="clear: both"></div>
+<div align="right" style="font-size: 8px;vertical-align: bottom">(подпись поступающего)</div>
+</p>
+<p>
+<div style="float: left">В случае не поступления на обучение выдача оригиналов документов производится при наличии
+    расписки в приеме документов, выданной сотрудником приемной комиссии
+</div>
+<div style="clear: both"></div>
+<div style="float: right;">____________________</div>
+<div style="clear: both"></div>
+<div align="right" style="font-size: 8px">(подпись поступающего)</div>
+</p>
+{% if КопияАттестата == 1 %}
+<p>
+<div style="float: left">Обязуюсь предоставить подлинник документа об образовании не
+    позднее <u>{{ priem_end_date }}</u></div>
+<div style="clear: both"></div>
+<div style="float: right;">____________________</div>
+<div style="clear: both"></div>
+<div align="right" style="font-size: 8px">(подпись поступающего)</div>
+</p>
+{% endif %}
+<p>
+<div style="float: left">Подлинность документа об образовании подтверждаю</div>
+<div style="float: right;">____________________</div>
+<div style="clear: both"></div>
+<div align="right" style="font-size: 8px">(подпись поступающего)</div>
+</p>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<p>
+<div align="right">Подпись ответственного лица приемной комиссии ____________ / <u>{{ Author }}</u></div>
+</p>
+<p align="right">Дата «<u>{{ statement_date_d }}</u>» <u>{{ statement_date_m }}</u> <u>{{ statement_date_y }}</u> г.</p>
+<br/><br/><br/><br/><br/><br/>
+<p>Документы получены:
+    ____________________________________________________________________________________________</p>
+<p>
+    ____________________________________________________________________________________________________________________</p>
+<p>
+    ____________________________________________________________________________________________________________________</p>
+<p>
+    ____________________________________________________________________________________________________________________</p>
+<br/><br/>
+<p>
+<div style="float: left">Дата «_____» ____________________ 20_____ г.</div>
+<div style="float: right;">____________________</div>
+<div style="clear: both"></div>
+<div align="right" style="font-size: 8px">(подпись поступающего)</div>
+</p>
+</body>
+</html>
