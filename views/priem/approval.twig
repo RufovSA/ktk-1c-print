@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title></title>
-    <style>
-        body {
-            font-size: 12px;
-            font-family: DejaVu Sans, sans-serif;
-        }
-
-        table {
-            width: 100%
-        }
-
-        table td {
-            vertical-align: top;
-            padding: 2px
-        }
-    </style>
-</head>
-<body>
+{% extends "base.twig" %}
+{% block content %}
 
 <div style="position: absolute;bottom:-20px;right:0">
     <div align="right" style="font-size: 10px">____ "__________" 20___ г. ____________ / _____________________</div>
@@ -215,5 +195,4 @@
 <div align="right">____ "__________" 20___ г. ____________ / _____________________</div>
 <div align="right" style="font-size: 8px">(подпись)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(расшифровка подписи)</div>
 
-</body>
-</html>
+{% endblock %}

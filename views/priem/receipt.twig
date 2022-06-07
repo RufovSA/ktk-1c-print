@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title></title>
-    <style>
-        body {
-            font-size: 12px;
-            font-family: DejaVu Sans, sans-serif;
-        }
-
-        table {
-            width: 100%
-        }
-
-        table td {
-            vertical-align: top;
-            padding: 2px
-        }
-    </style>
-</head>
-<body>
+{% extends "base.twig" %}
+{% block content %}
 {% for i in 0..count_receipt %}
 <h2 align="center">{{ company_name }}<br/>
     ({{ company_name_brief }})
@@ -67,5 +47,4 @@
 <br />
 {% if i != count_receipt %}<hr />{% endif %}
 {% endfor %}
-</body>
-</html>
+{% endblock %}

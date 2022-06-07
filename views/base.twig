@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{% endblock %}</title>
+    {% if format == 'pdf' %}
+    <style>
+        body {
+            font-size: 12px;
+            font-family: DejaVu Sans, sans-serif;
+        }
+
+        table {
+            width: 100%
+        }
+
+        table td {
+            vertical-align: top;
+            padding: 2px
+        }
+    </style>
+    {%  endif %}
+    <link rel="stylesheet" type="text/css" href="/plugins/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/plugins/bootstrap/css/bootstrap.min.css" />
+    <script>
+        let language = {
+            "decimal":        "",
+            "emptyTable":     "Данные в таблице отсутствуют",
+            "info":           "Отображение _START_ до _END_ из _TOTAL_ записей",
+            "infoEmpty":      "Отображение от 0 до 0 из 0 записей",
+            "infoFiltered":   "(отфильтровано из _MAX_ всего записей)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Показать записей _MENU_",
+            "loadingRecords": "Загрузка...",
+            "processing":     "",
+            "search":         "Поиск:",
+            "zeroRecords":    "Совпадающих записей не найдено",
+            "paginate": {
+                "first":      "Первый",
+                "last":       "Последний",
+                "next":       "Следующий",
+                "previous":   "Предыдущий"
+            },
+            "aria": {
+                "sortAscending":  ": активировать для сортировки столбцов по возрастанию",
+                "sortDescending": ": активировать для сортировки столбцов по убыванию"
+            }
+        };
+    </script>
+</head>
+<body>
+    {% block content %}{% endblock %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/plugins/DataTables/datatables.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

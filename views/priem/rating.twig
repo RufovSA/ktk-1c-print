@@ -1,0 +1,105 @@
+{% extends 'base.twig' %}
+{% block title %}Рейтинг абитуриентов{% endblock %}
+{% block content %}
+    <div class="container">
+        {% set i = 1 %}
+        {% for company in companies %}
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link{% if i == 1 %} active{% endif %}" id="tab{{ company.Code }}"
+                        data-bs-toggle="tab" data-bs-target="#tabpanel{{ company.Code }}" type="button" role="tab"
+                        aria-controls="tabpanel{{ company.Code }}"
+                        aria-selected="true">{{ company.Description }}</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <br />
+            <div class="tab-pane fade{% if i == 1 %} show active{% endif %}" id="tabpanel{{ company.Code }}"
+                 role="tabpanel" aria-labelledby="tab{{ company.Code }}" tabindex="0">
+
+                <select class="form-select" onchange="showPlan(this.value);">
+                    <optgroup label="После 9 класса">
+                        {% for planPriem in company.ПланПриема %}
+                            {% if planPriem.ПрограммаОбучения.БазовоеОбразование == 'ОсновноеОбщее' %}
+                                <option value="{{ planPriem.ПрограммаОбучения.Code }}">{{ planPriem.ПрограммаОбучения.Специальность.Code }} "{{ planPriem.ПрограммаОбучения.Специальность.Description }}"
+                                {% for qualification in planPriem.ПрограммаОбучения.Квалификации %}
+                                    ({{ qualification.Description }})
+                                {% endfor %}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="После 11 класса">
+                        {% for planPriem in company.ПланПриема %}
+                            {% if planPriem.ПрограммаОбучения.БазовоеОбразование != 'ОсновноеОбщее' %}
+                                <option value="{{ planPriem.ПрограммаОбучения.Code }}">{{ planPriem.ПрограммаОбучения.Специальность.Code }} "{{ planPriem.ПрограммаОбучения.Специальность.Description }}"
+                                    {% for qualification in planPriem.ПрограммаОбучения.Квалификации %}
+                                        ({{ qualification.Description }})
+                                    {% endfor %}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                </select>
+
+                <div id="container_plan">
+                    {% set j = 1 %}
+                    {% for planPriem in company.ПланПриема %}
+                        <div id="plan{{ planPriem.ПрограммаОбучения.Code }}" class="container-plan"{% if j != 1 %} style="display: none"{% endif %}>
+                            <h3 class="text-center">Количество бюджетных мест: {{ planPriem.Данные[0].План }}</h3>
+                            <table id="tableplan{{ planPriem.ПрограммаОбучения.Code }}" class="data-table display">
+                                <thead>
+                                    <tr>
+                                        <th>Место в рейтинге</th>
+                                        <th>ID Заявления</th>
+                                        <th>Средний балл</th>
+                                        <th>Копия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set place = 1 %}
+                                    {% for statement in planPriem.Абитуриенты %}
+                                        <tr>
+                                            <td>{{ place }}</td>
+                                            <td>{{ statement.Number }}</td>
+                                            <td class="cp_ball">{{ statement.СреднийБаллАттестата }}</td>
+                                            <td>{% if statement.КопияАттестата %}&#10004;{% endif %}</td>
+                                        </tr>
+                                        {% if statement.КопияАттестата != '1' %}
+                                            {% set place = place + 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% set j = j  + 1 %}
+                    {% endfor %}
+                </div>
+
+            </div>
+            {% set i = i  + 1 %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function showPlan(code) {
+            console.log(code);
+            try {
+                let elements = document.querySelectorAll('.container-plan');
+                for (let elem of elements) {
+                    elem.style.display = 'none';
+                }
+                document.getElementById('plan' + code).style.display = 'block';
+            } catch (e) {}
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            $('.data-table').DataTable({
+                language: language,
+                select: true,
+                pageLength: 25
+            });
+        });
+    </script>
+{% endblock %}

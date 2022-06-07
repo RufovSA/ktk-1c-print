@@ -1,4 +1,7 @@
 <?php
+
+use RedBeanPHP\R;
+
 /** @var string $docId */
 
 $context = httpGetContent('Document_АнкетаАбитуриента', "Number eq '{$docId}'");
@@ -13,6 +16,8 @@ if (!$context) {
 $context['company_name'] = COMPANY_NAME;
 $context['company_name_brief'] = COMPANY_NAME_BRIEF;
 $context['priem_end_date'] = END_DATE;
+
+$context['format'] = 'pdf';
 
 $context['Гражданство'] = str_replace('ГражданинРоссийскойФедерации', 'Российская Федерация', $context['Гражданство']);
 

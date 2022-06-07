@@ -29,7 +29,7 @@
     "reagordi/reagordi": "self.version"
   },
   "require": {
-    "php": ">=7.0",
+    "php": ">=8.0",
     "ext-mbstring": "*",
     "ext-pdo": "*",
     "ext-ctype": "*",
@@ -37,10 +37,12 @@
     "ext-simplexml": "*",
     "ext-fileinfo": "*",
     "ext-dom": "*",
+    "phpfastcache/phpfastcache": "^9.1",
     "filp/whoops": "^2.14",
     "dompdf/dompdf": "^1.2",
     "twig/twig": "^3.0",
     "ext-curl": "*",
-    "kilylabs/odata-1c": "^1.2"
+    "kilylabs/odata-1c": "^1.2",
+    "gabordemooij/redbean": "^5.7"
   }
 }

@@ -7,10 +7,15 @@
 /** @var array $context */
 /** @var string $format */
 /** @var string $docId */
-
 /** @var string $uri */
 
 use Dompdf\Dompdf;
+
+$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id']: null;
+if (is_null($docId)) {
+    require_once ROOT_DIR . '/modules/404.php';
+    exit;
+}
 
 $dompdf = new Dompdf();
 

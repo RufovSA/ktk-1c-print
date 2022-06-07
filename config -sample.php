@@ -6,3 +6,7 @@ const HOST_1C = 'http://localhost';
 const PATH_1C = '/kolledge';
 const USER_1C = 'user';
 const PASS_1C = 'password';
+
+const TYPE_CACHE = 'files';
+const CACHE_HOST = '127.0.0.1';
+const CACHE_POST = '6379';
