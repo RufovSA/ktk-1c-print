@@ -52,7 +52,7 @@ require_once ROOT_DIR . '/lib/functions.php';
 $loader = new \Twig\Loader\FilesystemLoader(ROOT_DIR . '/views/');
 $twig = new \Twig\Environment($loader, [
     'cache' => ROOT_DIR . '/cache',
-    'debug' => true
+    'debug' => DEBUG
 ]);
 
 if (TYPE_CACHE == 'redis' || TYPE_CACHE == 'memcache') {
