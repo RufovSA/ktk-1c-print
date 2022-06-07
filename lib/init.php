@@ -9,9 +9,28 @@ if (!is_file(ROOT_DIR . '/config.php')) {
 
 require_once ROOT_DIR . '/config.php';
 
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-$whoops->register();
+ob_start();
+
+if (DEBUG) {
+    $whoops = new \Whoops\Run;
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    $whoops->register();
+} else {
+    $handler = function($errno = '', $errstr = '', $errfile = '', $errline = 0) {
+        if (!$errno || $errno == E_WARNING) return;
+
+        ob_get_clean();
+        require_once ROOT_DIR . '/modules/500.php';
+        exit();
+    };
+    error_reporting(E_ALL);
+    ini_set('html_errors', true);
+    ini_set('display_errors', true);
+    ini_set('display_startup_errors', true);
+    set_error_handler($handler, E_ALL);
+    set_exception_handler($handler);
+    register_shutdown_function($handler);
+}
 
 $uri = $_GET['q'] ?? '';
 

@@ -10,8 +10,15 @@
 /** @var string $docId */
 
 require_once ROOT_DIR . '/lib/priem/companies.php';
+require_once ROOT_DIR . '/lib/Optimize.php';
 
 $data = [];
 $data['companies'] = $context;
 
-echo $twig->render('priem/rating.twig', $data);
+$html = $twig->render('priem/rating.twig', $data);
+
+if (!DEBUG) {
+    echo Optimize::html($html);
+} else {
+    echo $html;
+}

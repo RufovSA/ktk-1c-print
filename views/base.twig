@@ -5,48 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}{% endblock %}</title>
     {% if format == 'pdf' %}
-    <style>
-        body {
-            font-size: 12px;
-            font-family: DejaVu Sans, sans-serif;
-        }
+        <style>
+            body {
+                font-size: 12px;
+                font-family: DejaVu Sans, sans-serif;
+            }
 
-        table {
-            width: 100%
-        }
+            table {
+                width: 100%
+            }
 
-        table td {
-            vertical-align: top;
-            padding: 2px
-        }
-    </style>
+            table td {
+                vertical-align: top;
+                padding: 2px
+            }
+        </style>
+    {% else %}
+        <link rel="shortcut icon" href="https://landing.ktk40.ru/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
     {%  endif %}
-    <link rel="shortcut icon" href="https://landing.ktk40.ru/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
     <script>
-        let language = {
-            "decimal":        "",
-            "emptyTable":     "Данные в таблице отсутствуют",
-            "info":           "Отображение _START_ до _END_ из _TOTAL_ записей",
-            "infoEmpty":      "Отображение от 0 до 0 из 0 записей",
-            "infoFiltered":   "(отфильтровано из _MAX_ всего записей)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Показать записей _MENU_",
-            "loadingRecords": "Загрузка...",
-            "processing":     "",
-            "search":         "Поиск:",
-            "zeroRecords":    "Совпадающих записей не найдено",
-            "paginate": {
-                "first":      "Первый",
-                "last":       "Последний",
-                "next":       "Следующий",
-                "previous":   "Предыдущий"
+        let language={
+            "decimal":"",
+            "emptyTable":"Данные в таблице отсутствуют",
+            "info":"Отображение _START_ до _END_ из _TOTAL_ записей",
+            "infoEmpty":"Отображение от 0 до 0 из 0 записей",
+            "infoFiltered":"(отфильтровано из _MAX_ всего записей)",
+            "infoPostFix":"",
+            "thousands":",",
+            "lengthMenu":"Показать записей _MENU_",
+            "loadingRecords":"Загрузка...",
+            "processing":"",
+            "search":"Поиск:",
+            "zeroRecords":"Совпадающих записей не найдено",
+            "paginate":{
+                "first":"Первый",
+                "last":"Последний",
+                "next":"Следующий",
+                "previous":"Предыдущий"
             },
-            "aria": {
-                "sortAscending":  ": активировать для сортировки столбцов по возрастанию",
-                "sortDescending": ": активировать для сортировки столбцов по убыванию"
+            "aria":{
+                "sortAscending":": активировать для сортировки столбцов по возрастанию",
+                "sortDescending":": активировать для сортировки столбцов по убыванию"
             }
         };
     </script>

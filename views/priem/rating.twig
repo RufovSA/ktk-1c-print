@@ -50,20 +50,20 @@
                             <table id="tableplan{{ planPriem.ПрограммаОбучения.Code }}" class="data-table display">
                                 <thead>
                                     <tr>
-                                        <th>Место в рейтинге</th>
-                                        <th>ID Заявления</th>
-                                        <th>Средний балл</th>
-                                        <th>Копия</th>
+                                        <th class="text-center">Место в рейтинге</th>
+                                        <th class="text-center">ID Заявления</th>
+                                        <th class="text-center">Средний балл</th>
+                                        <th class="text-center">Копия</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% set place = 1 %}
                                     {% for statement in planPriem.Абитуриенты %}
                                         <tr>
-                                            <td>{{ place }}</td>
-                                            <td>{{ statement.Number }}</td>
-                                            <td class="cp_ball">{{ statement.СреднийБаллАттестата }}</td>
-                                            <td>{% if statement.КопияАттестата %}&#10004;{% endif %}</td>
+                                            <td class="text-center">{{ place }}</td>
+                                            <td class="text-center">{{ statement.Number }}</td>
+                                            <td class="text-center">{{ statement.СреднийБаллАттестата }}</td>
+                                            <td class="text-center">{% if statement.КопияАттестата %}&#10004;{% endif %}</td>
                                         </tr>
                                         {% if statement.КопияАттестата != '1' %}
                                             {% set place = place + 1 %}
