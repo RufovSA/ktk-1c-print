@@ -70,5 +70,5 @@ for ($i = 0; $i < count($context); $i++) {
 }
 
 
-$cached_string->set($context)->expiresAfter(3600);
+$cached_string->set($context)->expiresAfter(300);
 $cache->save($cached_string);
