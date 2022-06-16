@@ -27,16 +27,21 @@ $context['ДатаРождения'] = DateTime::createFromFormat('Y-m-d H:i:s',
 $context['ДатаОкончанияОбразовательнойОрганизации'] = str_replace('T', ' ', $context['ДатаОкончанияОбразовательнойОрганизации']);
 $context['ДатаОкончанияОбразовательнойОрганизации'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['ДатаОкончанияОбразовательнойОрганизации'])->format('Y');
 
-$context['ИзучаемыйЯзык'] = httpGetContentById('Catalog_ЯзыкиНародовМира', $context['ИзучаемыйЯзык_Key']);
+if ($context['ИзучаемыйЯзык_Key'] != '00000000-0000-0000-0000-000000000000')
+    $context['ИзучаемыйЯзык'] = httpGetContentById('Catalog_ЯзыкиНародовМира', $context['ИзучаемыйЯзык_Key']);
 
-$context['type_doc'] = httpGetContentById('Catalog_ДокументыУдостоверяющиеЛичность', $context['ВидДокументаУдостоверяющегоЛичность_Key']);
-$context['type_doc'] = $context['type_doc']['Description'] ?? '';
+if ($context['ВидДокументаУдостоверяющегоЛичность_Key'] != '00000000-0000-0000-0000-000000000000') {
+    $context['type_doc'] = httpGetContentById('Catalog_ДокументыУдостоверяющиеЛичность', $context['ВидДокументаУдостоверяющегоЛичность_Key']);
+    $context['type_doc'] = $context['type_doc']['Description'] ?? '';
+}
 
 $context['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = str_replace('T', ' ', $context['ДатаВыдачиДокументаУдостоверяющегоЛичность']);
 $context['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['ДатаВыдачиДокументаУдостоверяющегоЛичность'])->format('d.m.Y');
 
-$context['Author'] = httpGetContentById('Catalog_Пользователи', $context['Автор_Key']);
-$context['Author'] = $context['Author']['Description'] ?? '';
+if ($context['Автор_Key'] != '00000000-0000-0000-0000-000000000000') {
+    $context['Author'] = httpGetContentById('Catalog_Пользователи', $context['Автор_Key']);
+    $context['Author'] = $context['Author']['Description'] ?? '';
+}
 
 $context['Date'] = str_replace('T', ' ', $context['Date']);
 $context['statement_date_d'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['Date'])->format('d');
@@ -92,10 +97,12 @@ for ($i = 0; $i < count($context['ПодачаЗаявлений']); $i++) {
 
 $context['КопияАттестата'] = '';
 for ($i = 0; $i < count($context['ДокументыДляПоступления']); $i++) {
-    $data = httpGetContentById('Catalog_ДокументыДляПоступления', $context['ДокументыДляПоступления'][$i]['ДокументДляПоступления_Key']);
-    if ($data['ТипДокумента'] == 'ДокументОбОбразовании') {
-        $context['КопияАттестата'] = $context['ДокументыДляПоступления'][$i]['ПредоставленаКопия'];
-        break;
+    if ($context['ДокументыДляПоступления'][$i]['ДокументДляПоступления_Key'] != '00000000-0000-0000-0000-000000000000') {
+        $data = httpGetContentById('Catalog_ДокументыДляПоступления', $context['ДокументыДляПоступления'][$i]['ДокументДляПоступления_Key']);
+        if ($data['ТипДокумента'] == 'ДокументОбОбразовании') {
+            $context['КопияАттестата'] = $context['ДокументыДляПоступления'][$i]['ПредоставленаКопия'];
+            break;
+        }
     }
 }
 

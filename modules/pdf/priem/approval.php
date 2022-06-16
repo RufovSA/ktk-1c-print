@@ -33,12 +33,15 @@ function getAge($y, $m, $d)
 
 $context['Age'] = getAge($date[2], $date[1], $date[0]);
 
-$context['parent'] = $context['СоставСемьи'][0];
+$context['parent'] = $context['СоставСемьи'][0] ?? null;
 
-$context['parent']['ВидДокументаУдостоверяющегоЛичность'] = httpGetContentById('Catalog_ДокументыУдостоверяющиеЛичность', $context['parent']['ВидДокументаУдостоверяющегоЛичность_Key']);
+if ($context['parent']) {
+    $context['parent']['ВидДокументаУдостоверяющегоЛичность'] = httpGetContentById('Catalog_ДокументыУдостоверяющиеЛичность', $context['parent']['ВидДокументаУдостоверяющегоЛичность_Key']);
 
-$context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = str_replace('T', ' ', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность']);
-$context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'])->format('Y');
+    $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = str_replace('T', ' ', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность']);
+    $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'])->format('Y');
+
+}
 
 $dompdf->loadHtml($twig->render('priem/approval.twig', $context));
 

@@ -5,7 +5,7 @@
     ({{ company_name_brief }})
 </h2>
     <div style="text-align: center"><b>Сайт:</b> ktk40.ru, <b>Тел.:</b> (4842) 52 - 18 - 34, <b>E-mail:</b> priem@ktk40.ru</div>
-<h3 align="center">РАСПИСКА № {{ Number }}</h3>
+    <h3 align="center">РАСПИСКА № <u>{{ Number }}</u></h3>
 <p>от <u>{{ fio_r }}</u></p>
 <p>на специальность (профессию) <u>{{ ПодачаЗаявлений.ПрограммаОбучения.Специальность.Code }} "{{ ПодачаЗаявлений.ПрограммаОбучения.Специальность.Description }}"
                 {% for qualification in ПодачаЗаявлений.ПрограммаОбучения.Квалификаци %}
@@ -31,9 +31,7 @@
     </tr>
     {% endfor %}
 </table>
-<p>
 <div align="right">Подпись ответственного лица приемной комиссии ____________ / <u>{{ Author }}</u></div>
-</p>
     <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
             <td style="text-align: left">
