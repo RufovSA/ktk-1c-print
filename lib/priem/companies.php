@@ -36,23 +36,28 @@ for ($i = 0; $i < count($context); $i++) {
             $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['Квалификации'][$l] = httpGetContentById('Catalog_Квалификации', $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['Квалификации'][$l]['Квалификация_Key']);
         }
 
+        $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоКопий'] = 0;
+        $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоОригиналов'] = 0;
         foreach ($statement as $item) {
             if ($item['ПрограммаОбучения_Key'] == $context[$i]['ПланПриема'][$j]['ПрограммаОбучения_Key']) {
                 $_abitur = httpGetContentById('Document_АнкетаАбитуриента', $item['Ref_Key']);
-
-                $_abitur['КопияАттестата'] = '0';
-                for ($cc = 0; $cc < count($_abitur['ДокументыДляПоступления']); $cc++) {
-                    $data = httpGetContentById('Catalog_ДокументыДляПоступления', $_abitur['ДокументыДляПоступления'][$cc]['ДокументДляПоступления_Key']);
-                    if ($data['ТипДокумента'] == 'ДокументОбОбразовании') {
-                        $_abitur['КопияАттестата'] = $_abitur['ДокументыДляПоступления'][$cc]['ПредоставленаКопия'];
-                        break;
+                if (!$_abitur['ДокументыВозвращены']) {
+                    $_abitur['КопияАттестата'] = '0';
+                    for ($cc = 0; $cc < count($_abitur['ДокументыДляПоступления']); $cc++) {
+                        $data = httpGetContentById('Catalog_ДокументыДляПоступления', $_abitur['ДокументыДляПоступления'][$cc]['ДокументДляПоступления_Key']);
+                        if ($data['ТипДокумента'] == 'ДокументОбОбразовании') {
+                            $_abitur['КопияАттестата'] = $_abitur['ДокументыДляПоступления'][$cc]['ПредоставленаКопия'];
+                            break;
+                        }
                     }
+                    if ($_abitur['КопияАттестата']) $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоКопий']++;
+                    else $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоОригиналов']++;
+                    $statement_table = R::dispense( 'statement' );
+                    $statement_table->number = $_abitur['Number'];
+                    $statement_table->bal = $_abitur['СреднийБаллАттестата'];
+                    $statement_table->copyatistat = $_abitur['КопияАттестата'];
+                    $id = R::store( $statement_table );
                 }
-                $statement_table = R::dispense( 'statement' );
-                $statement_table->number = $_abitur['Number'];
-                $statement_table->bal = $_abitur['СреднийБаллАттестата'];
-                $statement_table->copyatistat = $_abitur['КопияАттестата'];
-                $id = R::store( $statement_table );
             }
         }
         $context[$i]['ПланПриема'][$j]['Абитуриенты'] = [];
@@ -68,7 +73,6 @@ for ($i = 0; $i < count($context); $i++) {
         R::nuke();
     }
 }
-
 
 $cached_string->set($context)->expiresAfter(300);
 $cache->save($cached_string);
