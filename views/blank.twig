@@ -1,0 +1,51 @@
+{% extends "base.twig" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <style>
+        @import url("/css/sweet-alert.css");
+        .placeholder{background-color:transparent}
+
+        @media (prefers-color-scheme: dark) {
+            body, .sweet-alert, .sweet-alert .icon.success::before, .sweet-alert .icon.success::after, .sweet-alert .icon.success .fix {
+                background-color: #222226;
+            }
+
+            .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+                color: #fff
+            }
+
+            p, .text-muted {
+                color: #a9a9a9!important;
+            }
+        }
+    </style>
+    <div class="sweet-alert showSweetAlert visible">
+        {% if typeAlert == 'error' %}
+            <div class="icon error animateErrorIcon">
+            <span class="x-mark">
+                <span class="line left"></span>
+                <span class="line right"></span>
+            </span>
+            </div>
+            <h2>Ошибка</h2>
+        {% elseif typeAlert == 'warning' %}
+            <div class="icon warning">
+                <span class="body"></span>
+                <span class="dot"></span>
+            </div>
+            <h2>Предупреждение</h2>
+        {% elseif typeAlert == 'info' %}
+            <div class="icon info animate"></div>
+            <h2>Информация</h2>
+        {% elseif typeAlert == 'success' %}
+            <div class="icon success animate"><span class="line tip animateSuccessTip"></span> <span
+                        class="line long animateSuccessLong"></span>
+                <div class="placeholder"></div>
+                <div class="fix"></div>
+            </div>
+            <h2>Успех</h2>
+        {% endif %}
+        <p class="lead text-muted">{{ description }}</p>
+    </div>
+
+{% endblock %}
