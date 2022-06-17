@@ -5,6 +5,8 @@
 
 /** @var \Twig\Environment $twig */
 
+require_once ROOT_DIR . '/lib/Optimize.php';
+
 /**
  * Удаление данных в директории
  *
