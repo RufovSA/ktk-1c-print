@@ -38,8 +38,8 @@ if ($context['ВидДокументаУдостоверяющегоЛичнос
 $context['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = str_replace('T', ' ', $context['ДатаВыдачиДокументаУдостоверяющегоЛичность']);
 $context['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['ДатаВыдачиДокументаУдостоверяющегоЛичность'])->format('d.m.Y');
 
-if ($context['Автор_Key'] != '00000000-0000-0000-0000-000000000000') {
-    $context['Author'] = httpGetContentById('Catalog_Пользователи', $context['Автор_Key']);
+if ($context['Ответственный_Key'] != '00000000-0000-0000-0000-000000000000') {
+    $context['Author'] = httpGetContentById('Catalog_Пользователи', $context['Ответственный_Key']);
     $context['Author'] = $context['Author']['Description'] ?? '';
 }
 
