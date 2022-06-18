@@ -7,11 +7,12 @@
 /** @var array $context */
 /** @var string $format */
 /** @var string $docId */
+
 /** @var string $uri */
 
 use Dompdf\Dompdf;
 
-$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id']: null;
+$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id'] : null;
 if (is_null($docId)) {
     require_once ROOT_DIR . '/modules/404.php';
     exit;
@@ -37,4 +38,4 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 // Output the generated PDF to Browser
-$dompdf->stream('statement.pdf', ['Attachment' => 0]);
+$dompdf->stream('statement-' . $docId . '.pdf', ['Attachment' => 0]);

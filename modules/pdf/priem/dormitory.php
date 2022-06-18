@@ -7,11 +7,12 @@
 /** @var array $context */
 /** @var string $format */
 /** @var string $docId */
+
 /** @var string $uri */
 
 use Dompdf\Dompdf;
 
-$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id']: null;
+$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id'] : null;
 if (is_null($docId)) {
     require_once ROOT_DIR . '/modules/404.php';
     exit;
@@ -24,8 +25,8 @@ require_once ROOT_DIR . '/lib/ncl/NCLNameCaseRu.php';
 
 $nc = new \NCLNameCaseRu();
 
-$context['fio_p'] = $nc->q($context['Фамилия']. ' '. $context['Имя']. ' '. $context['Отчество'], \NCL::$RODITLN);
-$context['fio_d'] = $nc->q($context['Фамилия']. ' '. $context['Имя']. ' '. $context['Отчество'], \NCL::$DATELN);
+$context['fio_p'] = $nc->q($context['Фамилия'] . ' ' . $context['Имя'] . ' ' . $context['Отчество'], \NCL::$RODITLN);
+$context['fio_d'] = $nc->q($context['Фамилия'] . ' ' . $context['Имя'] . ' ' . $context['Отчество'], \NCL::$DATELN);
 
 $context['data_start'] = date('Y');
 $context['data_end'] = date('Y') + 1;
@@ -48,4 +49,4 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 // Output the generated PDF to Browser
-$dompdf->stream('statement.pdf', ['Attachment' => 0]);
+$dompdf->stream('dormitory-' . $docId . '.pdf', ['Attachment' => 0]);

@@ -1,5 +1,11 @@
 {% extends "base.twig" %}
 {% block content %}
+    <style>
+        body {
+            font-size: 12px;
+            font-family: DejaVu Sans, sans-serif;
+        }
+    </style>
 {% for i in 0..count_receipt %}
 <h2 align="center">{{ company_name }}<br/>
     ({{ company_name_brief }})

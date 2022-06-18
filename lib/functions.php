@@ -6,10 +6,10 @@
  * @param string $filter
  * @return array
  */
-function httpGetContent(string $obj, string $filter = ''): array
+function httpGetContent(string $obj, string $filter = '', $options = []): array
 {
     global $client;
-    return $client->{$obj}->get($filter)->values();
+    return $client->{$obj}->get(null, $filter, $options)->values();
 }
 
 /**

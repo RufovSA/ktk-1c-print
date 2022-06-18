@@ -7,11 +7,12 @@
 /** @var array $context */
 /** @var string $format */
 /** @var string $docId */
+
 /** @var string $uri */
 
 use Dompdf\Dompdf;
 
-$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id']: null;
+$docId = !empty($_REQUEST['doc_id']) ? $_REQUEST['doc_id'] : null;
 if (is_null($docId)) {
     require_once ROOT_DIR . '/modules/404.php';
     exit;
@@ -27,7 +28,7 @@ $nc = new \NCLNameCaseRu();
 $context['ВидДокументаОбразованияКласс'] = '(11 кл.)';
 if ($context['ВидДокументаОбразования'] == 'АттестатОсновноеОбщее') $context['ВидДокументаОбразованияКласс'] = '(9 кл.)';
 
-$context['fio_r'] = $nc->q($context['Фамилия']. ' '. $context['Имя']. ' '. $context['Отчество'], \NCL::$RODITLN);
+$context['fio_r'] = $nc->q($context['Фамилия'] . ' ' . $context['Имя'] . ' ' . $context['Отчество'], \NCL::$RODITLN);
 $context['ПодачаЗаявлений'] = $context['ПодачаЗаявлений'][0];
 
 for ($i = 0; $i < count($context['ДокументыДляПоступления']); $i++) {
@@ -52,4 +53,4 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 // Output the generated PDF to Browser
-$dompdf->stream('statement.pdf', ['Attachment' => 0]);
+$dompdf->stream('receipt-' . $docId . '.pdf', ['Attachment' => 0]);

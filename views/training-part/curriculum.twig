@@ -1,0 +1,158 @@
+{% extends "base.twig" %}
+{% block content %}
+    <style>
+        th p {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <div style="text-align: right"><b>Утверждаю:</b></div>
+    <div style="text-align: right">Директор {{ company_name_brief }}</div>
+    <div style="text-align: right">_______________ / {{ company_director }}</div>
+    <div style="text-align: right">Приказ № ___ от {{ ДатаУтверждения }} г.</div>
+
+    <h1 style="text-align: center; margin-top: 100px;">УЧЕБНЫЙ ПЛАН</h1>
+    <div style="text-align: center;"><b>образовательной программы среднего профессионального образования -</b></div>
+    <div style="text-align: center;"><b>программы подготовки специалистов среднего звена</b></div>
+    <div style="text-align: center;">{{ company_name }}</div>
+    <p style="text-align: center;">
+        {% if Специальность.Профессия %}
+            по профессии
+        {% else %}
+        по специальности
+        {% endif %}
+        <b>{{ Специальность.Code }} "{{ Специальность.Description }}"</b></p>
+
+    <div style="text-align: right; margin-top: 150px;"><b>Квалификация:</b> {{ Квалификация.Description }}</div>
+    <div style="text-align: right"><b>Форма обучения:</b> {{ ФормаОбучения }}</div>
+    <div style="text-align: right"><b>Нормативный срок обучения:</b> {{ НормативныйСрокОбученияЛет }} г. {{ НормативныйСрокОбученияМесяцев }} мес.</div>
+    {% if БазаОсвоения == 'ОсновноеОбщее' %}
+        <div style="text-align: right">на базе основного общего образования.</div>
+    {% else %}
+        <div style="text-align: right">на базе среднего общего образования.</div>
+    {% endif %}
+    {% if Профиль %}<div style="text-align: right"><b>Профиль получаемого профессионального образования:</b> {{ Профиль }}</div>{% endif %}
+
+    <div style="page-break-before: always;"></div>
+
+    <h2 style="text-align: center;margin: 0">РАБОЧИЙ УЧЕБНЫЙ ПЛАН {{ ГодНачалаПодготовки }} - {{ ГодКонцаПодготовки }} гг.</h2>
+    <hr />
+    <h2 style="text-align: center;margin: 0">
+        {% if Специальность.Профессия %}
+        Профессия
+        {% else %}
+        Специальность
+        {% endif %}:
+        {{ Специальность.Code }} "{{ Специальность.Description }}"</h2>
+    <hr />
+    <h2 style="text-align: center;margin: 0">Квалификация: {{ Квалификация.Description }}</h2>
+
+    <table width="100%" cellpadding="0" cellspacing="0" border="1" style="font-size: 14px">
+        <tr>
+            <th rowspan="5">
+                <p class="vertical">Индекс</p>
+            </th>
+            <th rowspan="5" width="200px">Наименование циклов, разделов,<br />дисциплин, профессиональных<br />модулей, МДК, практик</th>
+            <th rowspan="5">
+                <p class="vertical" style="width: 50px">Формы промежуточной аттестации</p>
+            </th>
+            <th rowspan="5" width="10px">
+                <p class="vertical" style="width: 20px">Экзамен</p>
+            </th>
+            <th rowspan="2" colspan="7">Объем образовательной программы в<br />академических часах</th>
+            <th colspan="{{ ЧислоСеместров * 2 }}">Распределение обязательных учебных занятий по<br />курсам и семестрам (часов в семестр)</th>
+        </tr>
+        <tr>
+            {% for semestpCode in 1..ЧислоСеместров %}
+            <th colspan="2">{{ semestpCode }} курс</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th rowspan="3">
+                <p class="vertical" style="width: 20px">Консультации</p>
+            </th>
+            <th rowspan="3">
+                <p class="vertical" style="width: 60px">Всего учебных занятий</p>
+            </th>
+            <th colspan="4">Работа обучающихся по<br />взаимодействии с<br />преподавателем</th>
+            <th rowspan="3">
+                <p class="vertical" style="width: 40px">Самостоятельная работа</p>
+            </th>
+            {% for semestpCode in 1..ЧислоСеместров * 2 %}
+                <th rowspan="3">
+                    <p class="vertical">{{ semestpCode }}сем.</p>
+                </th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="3">Занятия по<br />исциплинам и МДК</th>
+            <th rowspan="2">
+                <p class="vertical">Курсовых работ (проектов)</p>
+            </th>
+        </tr>
+        <tr>
+            <th height="100px">
+                <p class="vertical">Практическая<br />подготовка</p>
+            </th>
+            <th>
+                <p class="vertical">Лекций</p>
+            </th>
+            <th>
+                <p class="vertical" style="width: 60px">Лабораторных и практических</p>
+            </th>
+        </tr>
+        <thead>
+            <tr>
+                {% for i in 1..11 + (ЧислоСеместров * 2) %}
+                <th>{{ i }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% set level = 1 %}
+            {% for ryp in СтрокиРУП %}
+                {% if ryp.IsFolder %}
+                    {% if ryp.Code %}
+                        {% set level = 2 %}
+                    {% else %}
+                        {% set level = 1 %}
+                    {% endif %}
+                {% else %}
+                    {% set level = 3 %}
+                {% endif %}
+                <tr {% if level == 1 %}
+                        style="background-color: #C4D5FF"
+                    {% elseif level == 2 %}
+                        style="background-color: #FFBBC9"
+                    {% else %}
+                        style="background-color: #FFECD8"
+                {% endif %}>
+                    <!-- 1 --><td>{{ ryp.Code }}</td>
+                    <!-- 2 --><td>{{ ryp.Description }}</td>
+                    <!-- 3 --><td>
+                        {% for i in 1..ЧислоСеместров * 2 %}
+                            {{ ryp.РаспределениеПоКурсамИСеместрам[i].ФормаКонтроля }}{% if ryp.РаспределениеПоКурсамИСеместрам[i].ФормаКонтроля %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <!-- 4 --><td style="text-align: center">{{ ryp.Аттестация }}</td>
+                    <!-- 5 --><td style="text-align: center">{{ ryp.Консультации }}</td>
+                    <!-- 6 --><td style="text-align: center;background-color: #FFBBC9">{{ ryp.ВсегоЗанятий }}</td>
+                    <!-- 7 --><td style="text-align: center">{{ ryp.ПрактическаяПодготовка }}</td>
+                    <!-- 8 --><td style="text-align: center">
+                        {% if ryp.ВсегоЗанятий - ryp.КурсовоеПроектирование - (ryp.ПрактическиеРаботы + ryp.ЛабораторныеРаботы) - ryp.СамостоятельнаяНагрузка <= 0 %}
+                        0
+                        {% else %}
+                        {{ ryp.ВсегоЗанятий - ryp.КурсовоеПроектирование - (ryp.ПрактическиеРаботы + ryp.ЛабораторныеРаботы) - ryp.СамостоятельнаяНагрузка }}
+                        {% endif %}
+                    </td>
+                    <!-- 9 --><td style="text-align: center">{{ ryp.ПрактическиеРаботы + ryp.ЛабораторныеРаботы }}</td>
+                    <!-- 10 --><td style="text-align: center">{{ ryp.КурсовоеПроектирование }}</td>
+                    <!-- 11 --><td style="text-align: center">{{ ryp.СамостоятельнаяНагрузка }}</td>
+                    {% for i in 1..ЧислоСеместров * 2 %}
+                        <td {% if i % 2 != 0 %}style="background-color: #FFBBC9"{% endif %}>{% if ryp.РаспределениеПоКурсамИСеместрам[i].Всего %}{{ ryp.РаспределениеПоКурсамИСеместрам[i].Всего }}{% else %}0{% endif %}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
