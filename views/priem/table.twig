@@ -73,7 +73,8 @@
                         <th style="text-align: right" colspan="2">Итого:</th>
                         <th class="text-center">{{ countOrig }}</th>
                         <th class="text-center">{{ countKopy }}</th>
-                        <th class="text-center">{{ countOrig + countKopy }}</th>
+                        {% set temp = countOrig + countKopy %}
+                        <th class="text-center">{{ temp }}</th>
                         <th class="text-center">{{ countPlan }}</th>
                     </tr>
                     <tr>
@@ -92,7 +93,8 @@
                                     {% endfor %}</td>
                                 <td class="text-center">{{ planPriem.ПрограммаОбучения.КолВоОригиналов }}</td>
                                 <td class="text-center">{{ planPriem.ПрограммаОбучения.КолВоКопий }}</td>
-                                <th class="text-center">{{ planPriem.ПрограммаОбучения.КолВоКопий + planPriem.ПрограммаОбучения.КолВоОригиналов }}</th>
+                                {% set temp = planPriem.ПрограммаОбучения.КолВоКопий + planPriem.ПрограммаОбучения.КолВоОригиналов %}
+                                <th class="text-center">{{ temp }}</th>
                                 <th class="text-center">{{ planPriem.Данные[0].План }}</th>
                             </tr>
                             {% set planCount = planCount + 1 %}
@@ -105,7 +107,8 @@
                         <th style="text-align: right" colspan="2">Итого:</th>
                         <th class="text-center">{{ countOrig2 }}</th>
                         <th class="text-center">{{ countKopy2 }}</th>
-                        <th class="text-center">{{ countOrig2 + countKopy2 }}</th>
+                        {% set temp = countOrig2 + countKopy2 %}
+                        <th class="text-center">{{ temp }}</th>
                         <th class="text-center">{{ countPlan2 }}</th>
                     </tr>
                     <tr class="table-primary">
