@@ -104,7 +104,7 @@
                 {% for qualification in specialtie.ПрограммаОбучения.Квалификаци %}
                     ({{ qualification.Description }})<br />
                 {% endfor %}</td>
-            <td>Очная форма обучения</td>
+            <td>{{ ФормаОбучения }}</td>
             <td>{{ specialtie.Финансирование }}</td>
             <td></td>
         </tr>
@@ -133,22 +133,16 @@
             {% endif %}) с «отличием»</u></p>
 {% endif %}
 <p><b>Средний балл аттестата:</b> {{ СреднийБаллАттестата }}</p>
-{% if checkbox_olimpiada %}
-    <p><u>Являюсь победителем всероссийских олимпиад (член сборной)</u></p>
+{% if ПризерОлимпиад %}
+    <p><b>Являюсь призером олимпиад (-ы):</b> <u>{{ НазванияОлимпиад }}</u></p>
 {% endif %}
 {% if ТребуетсяОбщежитие %}
     <p><u>Нуждаюсь в общежитие</u></p>
 {% endif %}
 <p><b>Иностранный язык</b>: <u>{{ ИзучаемыйЯзык.Description }}</u></p>
 {% if Льгота %}
-    <p><b>При поступлении имею следующие льготы</b>: <u>{{ Льгота.Description }}</u>
-    </p>
-{% endif %}
-{% if doc_benefits %}
-    <p><b>Документы, представляющий право на льготы</b>: <u>{{ doc_benefits }}</u></p>
-{% endif %}
-{% if social_status %}
-    <p><b>Социальный статус</b>: <u>{{ social_status }}</u></p>
+    <p><b>При поступлении имею следующие льготы</b>: <u>{{ Льгота.Description }}</u></p>
+    <p>{{ ИнформацияОЛьготе }}</p>
 {% endif %}
 {% if СоставСемьи %}
 <table width="100%" cellpadding="0" cellspacing="0" border="1">
@@ -167,6 +161,21 @@
         </tr>
     {% endfor %}
 </table>
+{% endif %}
+{% if РазмерОдежды or РазмерОбуви or РазмерГоловногоУбора %}
+    <p><b>Информация о размере одежды:</b></p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="1">
+        <tr>
+            <th>Размер одежды</th>
+            <th>Размер ообуви</th>
+            <th>Размер головного убора</th>
+        </tr>
+        <tr>
+            <td style="text-align: center">{{ РазмерОдежды }}</td>
+            <td style="text-align: center">{{ РазмерОбуви }}</td>
+            <td style="text-align: center">{{ РазмерГоловногоУбора }}</td>
+        </tr>
+    </table>
 {% endif %}
 <br/>
 <br/>

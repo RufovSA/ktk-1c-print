@@ -20,10 +20,12 @@
                         aria-controls="tabpanel{{ company.Code }}"
                         aria-selected="true">{{ company.Description }}</button>
             </li>
+            {% set i = i  + 1 %}
         {% endfor %}
     </ul>
     <div class="tab-content" id="myTabContent">
         <br />
+        {% set i = 1 %}
         {% for company in companies %}
         <div class="tab-pane fade{% if i == 1 %} show active{% endif %}" id="tabpanel{{ company.Code }}"
              role="tabpanel" aria-labelledby="tab{{ company.Code }}" tabindex="0">
@@ -43,15 +45,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="table-primary text-center" colspan="6">На базе 9 классов (Очное обучение)</th>
-                    </tr>
                     {% set planCount = 1 %}
-                    {% set countKopy = 0 %}
-                    {% set countOrig = 0 %}
                     {% set countPlan = 0 %}
+                    {% set j = 1 %}
                     {% for planPriem in company.ПланПриема %}
                         {% if planPriem.ПрограммаОбучения.БазовоеОбразование == 'ОсновноеОбщее' %}
+                            {% if j == 1 %}
+                                <tr>
+                                    <th class="table-primary text-center" colspan="6">На базе 9 классов (Очное обучение)</th>
+                                </tr>
+                            {% endif %}
                             <tr>
                                 <th class="text-center">{{ planCount }}</th>
                                 <td>{{ planPriem.ПрограммаОбучения.Специальность.Code }} "{{ planPriem.ПрограммаОбучения.Специальность.Description }}"
@@ -60,31 +63,32 @@
                                     {% endfor %}</td>
                                 <td class="text-center">{{ planPriem.ПрограммаОбучения.КолВоОригиналов }}</td>
                                 <td class="text-center">{{ planPriem.ПрограммаОбучения.КолВоКопий }}</td>
-                                <th class="text-center">{{ planPriem.ПрограммаОбучения.КолВоКопий + planPriem.ПрограммаОбучения.КолВоОригиналов }}</th>
+                                <th class="text-center">{{ planPriem.ПрограммаОбучения.ИтогоЗаявлений }}</th>
                                 <th class="text-center">{{ planPriem.Данные[0].План }}</th>
                             </tr>
                             {% set planCount = planCount + 1 %}
-                        {% set countKopy = countKopy + planPriem.ПрограммаОбучения.КолВоОригиналов %}
-                        {% set countOrig = countOrig + planPriem.ПрограммаОбучения.КолВоОригиналов %}
                         {% set countPlan = countPlan + planPriem.Данные[0].План %}
+                        {% set j = j + 1 %}
                         {% endif %}
                     {% endfor %}
+                    {% if j != 1 %}
                     <tr class="table-primary">
                         <th style="text-align: right" colspan="2">Итого:</th>
-                        <th class="text-center">{{ countOrig }}</th>
-                        <th class="text-center">{{ countKopy }}</th>
-                        {% set temp = countOrig + countKopy %}
-                        <th class="text-center">{{ temp }}</th>
+                        <th class="text-center">{{ company.ВсегоПосле9клОриг }}</th>
+                        <th class="text-center">{{ company.ВсегоПосле9клКоп }}</th>
+                        <th class="text-center">{{ company.ВсегоПосле9клОриг + company.ВсегоПосле9клКоп }}</th>
                         <th class="text-center">{{ countPlan }}</th>
                     </tr>
-                    <tr>
-                        <th class="table-primary text-center" colspan="6">На базе 11 классов (Очное обучение)</th>
-                    </tr>
-                    {% set countKopy2 = 0 %}
-                    {% set countOrig2 = 0 %}
+                    {% endif %}
                     {% set countPlan2 = 0 %}
+                    {% set j = 1 %}
                     {% for planPriem in company.ПланПриема %}
                         {% if planPriem.ПрограммаОбучения.БазовоеОбразование != 'ОсновноеОбщее' %}
+                        {% if j == 1 %}
+                        <tr>
+                            <th class="table-primary text-center" colspan="6">На базе 11 классов (Очное обучение)</th>
+                        </tr>
+                        {% endif %}
                             <tr>
                                 <th class="text-center">{{ planCount }}</th>
                                 <td>{{ planPriem.ПрограммаОбучения.Специальность.Code }} "{{ planPriem.ПрограммаОбучения.Специальность.Description }}"
@@ -93,29 +97,28 @@
                                     {% endfor %}</td>
                                 <td class="text-center">{{ planPriem.ПрограммаОбучения.КолВоОригиналов }}</td>
                                 <td class="text-center">{{ planPriem.ПрограммаОбучения.КолВоКопий }}</td>
-                                {% set temp = planPriem.ПрограммаОбучения.КолВоКопий + planPriem.ПрограммаОбучения.КолВоОригиналов %}
-                                <th class="text-center">{{ temp }}</th>
+                                <th class="text-center">{{ planPriem.ПрограммаОбучения.ИтогоЗаявлений }}</th>
                                 <th class="text-center">{{ planPriem.Данные[0].План }}</th>
                             </tr>
                             {% set planCount = planCount + 1 %}
-                            {% set countKopy2 = countKopy2 + planPriem.ПрограммаОбучения.КолВоОригиналов %}
-                            {% set countOrig2 = countOrig2 + planPriem.ПрограммаОбучения.КолВоОригиналов %}
                             {% set countPlan2 = countPlan2 + planPriem.Данные[0].План %}
+                            {% set j = j + 1 %}
                         {% endif %}
                     {% endfor %}
+                    {% if j != 1 %}
                     <tr class="table-primary">
                         <th style="text-align: right" colspan="2">Итого:</th>
-                        <th class="text-center">{{ countOrig2 }}</th>
-                        <th class="text-center">{{ countKopy2 }}</th>
-                        {% set temp = countOrig2 + countKopy2 %}
-                        <th class="text-center">{{ temp }}</th>
+                        <th class="text-center">{{ company.ВсегоПосле11клОриг }}</th>
+                        <th class="text-center">{{ company.ВсегоПосле11клКоп }}</th>
+                        <th class="text-center">{{ company.ВсегоПосле11клОриг + company.ВсегоПосле11клКоп }}</th>
                         <th class="text-center">{{ countPlan2 }}</th>
                     </tr>
+                    {% endif %}
                     <tr class="table-primary">
                         <th style="text-align: right" colspan="2">Итого поданных заявлений:</th>
-                        <th class="text-center">{{ countOrig + countOrig2 }}</th>
-                        <th class="text-center">{{ countKopy + countKopy2 }}</th>
-                        <th class="text-center">{{ countOrig + countOrig2 + countKopy + countKopy2 }}</th>
+                        <th class="text-center">{{ company.ВсегоПолученоЗаявленийОриг }}</th>
+                        <th class="text-center">{{ company.ВсегоПолученоЗаявленийКоп }}</th>
+                        <th class="text-center">{{ company.ВсегоПолученоЗаявленийИтог }}</th>
                         <th class="text-center">{{ countPlan + countPlan2 }}</th>
                     </tr>
                 </tbody>

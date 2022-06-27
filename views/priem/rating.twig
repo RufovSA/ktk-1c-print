@@ -11,10 +11,12 @@
                         aria-controls="tabpanel{{ company.Code }}"
                         aria-selected="true">{{ company.Description }}</button>
             </li>
+                {% set i = i  + 1 %}
             {% endfor %}
         </ul>
         <div class="tab-content" id="myTabContent">
             <br />
+            {% set i = 1 %}
             {% for company in companies %}
             <div class="tab-pane fade{% if i == 1 %} show active{% endif %}" id="tabpanel{{ company.Code }}"
                  role="tabpanel" aria-labelledby="tab{{ company.Code }}" tabindex="0">
