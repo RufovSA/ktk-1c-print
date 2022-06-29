@@ -42,7 +42,7 @@ if ($context['parent']) {
     }
 
     $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = str_replace('T', ' ', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность']);
-    $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'])->format('Y');
+    $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'] = DateTime::createFromFormat('Y-m-d H:i:s', $context['parent']['ДатаВыдачиДокументаУдостоверяющегоЛичность'])->format('d.m.Y');
 
 }
 
