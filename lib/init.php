@@ -13,7 +13,7 @@ ob_start();
 
 if (DEBUG) {
     $whoops = new \Whoops\Run;
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler());
     $whoops->register();
 } else {
     $handler = function($errno = '', $errstr = '', $errfile = '', $errline = 0) {
