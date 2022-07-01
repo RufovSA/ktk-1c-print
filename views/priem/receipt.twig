@@ -33,7 +33,7 @@
             {{ СерияДокументаОбразования }} {{ НомерДокументаОбразования }} {{ ВидДокументаОбразованияКласс }}
             {% endif %}</td>
         <td style="text-align: center">{{ document.ПредоставленоЭкземпляров }}</td>
-        <td style="text-align: center">{% if document.ПредоставленаКопия %}&#10004;{% endif %}</td>
+        <td style="text-align: center;font-family: DejaVu Sans, sans-serif;">{% if document.ПредоставленаКопия %}&#10004;{% endif %}</td>
     </tr>
     {% endfor %}
 </table>

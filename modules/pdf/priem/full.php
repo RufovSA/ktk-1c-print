@@ -24,11 +24,42 @@ require_once ROOT_DIR . '/lib/abiturient.php';
 require_once ROOT_DIR . '/lib/ncl/NCLNameCaseRu.php';
 
 /**
- * Заявление абитуриента
+ * Расписка абитуриента
  */
-$html = $twig->render('priem/statement.twig', $context);
+$nc = new \NCLNameCaseRu();
+
+$__context = $context;
+$__context['ВидДокументаОбразованияКласс'] = '(11 кл.)';
+if ($__context['ВидДокументаОбразования'] == 'АттестатОсновноеОбщее') $__context['ВидДокументаОбразованияКласс'] = '(9 кл.)';
+
+$__context['fio_r'] = $nc->q($__context['Фамилия'] . ' ' . $__context['Имя'] . ' ' . $__context['Отчество'], \NCL::$RODITLN);
+$__context['ПодачаЗаявлений'] = $__context['ПодачаЗаявлений'][0];
+
+for ($i = 0; $i < count($__context['ДокументыДляПоступления']); $i++) {
+    $__context['ДокументыДляПоступления'][$i]['ДокументДляПоступления'] = httpGetContentById('Catalog_ДокументыДляПоступления', $__context['ДокументыДляПоступления'][$i]['ДокументДляПоступления_Key']);
+}
+
+$__context['count_receipt'] = $_REQUEST['count'] ?? 1;
+
+$html = $twig->render('priem/receipt.twig', $__context);
 $html = str_replace('</body>', '', $html);
 $html = str_replace('</html>', '', $html);
+$html .= '<div style="page-break-before: always;"></div>';
+$html .= '<div style="page-break-before: always;"></div>';
+
+/**
+ * Заявление абитуриента
+ */
+$data = preg_replace('#<head(.*?)>(.*?)</head>#is', '', $twig->render('priem/statement.twig', $context));
+$data = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $data);
+$data = preg_replace('#<script (.*?)>(.*?)</script>#is', '', $data);
+$data = str_replace('<!DOCTYPE html>', '', $data);
+$data = str_replace('<html lang="ru">', '', $data);
+$data = str_replace('<body>', '', $data);
+$data = str_replace('</body>', '', $data);
+$data = str_replace('</html>', '', $data);
+
+$html .= $data;
 $html .= '<div style="page-break-before: always;"></div>';
 
 /**
@@ -94,37 +125,7 @@ if ($context['ТребуетсяОбщежитие']) {
     $data = str_replace('</body>', '', $data);
     $data = str_replace('</html>', '', $data);
     $html .= $data;
-    $html .= '<div style="page-break-before: always;"></div>';
-    $html .= '<div style="page-break-before: always;"></div>';
 }
-
-/**
- * Расписка абитуриента
- */
-$nc = new \NCLNameCaseRu();
-
-$context['ВидДокументаОбразованияКласс'] = '(11 кл.)';
-if ($context['ВидДокументаОбразования'] == 'АттестатОсновноеОбщее') $context['ВидДокументаОбразованияКласс'] = '(9 кл.)';
-
-$context['fio_r'] = $nc->q($context['Фамилия'] . ' ' . $context['Имя'] . ' ' . $context['Отчество'], \NCL::$RODITLN);
-$context['ПодачаЗаявлений'] = $context['ПодачаЗаявлений'][0];
-
-for ($i = 0; $i < count($context['ДокументыДляПоступления']); $i++) {
-    $context['ДокументыДляПоступления'][$i]['ДокументДляПоступления'] = httpGetContentById('Catalog_ДокументыДляПоступления', $context['ДокументыДляПоступления'][$i]['ДокументДляПоступления_Key']);
-}
-
-$context['count_receipt'] = $_REQUEST['count'] ?? 1;
-
-$data = preg_replace('#<head(.*?)>(.*?)</head>#is', '', $twig->render('priem/receipt.twig', $context));
-$data = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $data);
-$data = preg_replace('#<script (.*?)>(.*?)</script>#is', '', $data);
-$data = str_replace('<!DOCTYPE html>', '', $data);
-$data = str_replace('<html lang="ru">', '', $data);
-$data = str_replace('<body>', '', $data);
-$data = str_replace('</body>', '', $data);
-$data = str_replace('</html>', '', $data);
-
-$html .= $data;
 
 /******************************************************************/
 $html .= '</body></html>';

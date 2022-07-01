@@ -4,6 +4,7 @@
  */
 
 /** @var \Twig\Environment $twig */
+/** @var Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface $cache */
 
 require_once ROOT_DIR . '/lib/Optimize.php';
 
@@ -26,6 +27,8 @@ function Delete(string $path): bool
     }
     return false;
 }
+
+$cache->clear();
 
 Delete(ROOT_DIR . '/cache/');
 
