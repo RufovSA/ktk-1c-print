@@ -99,11 +99,11 @@ $data = str_replace('</body>', '', $data);
 $data = str_replace('</html>', '', $data);
 
 $html .= $data;
-$html .= '<div style="page-break-before: always;"></div>';
-$html .= '<div style="page-break-before: always;"></div>';
 
 
 if ($context['ТребуетсяОбщежитие']) {
+    $html .= '<div style="page-break-before: always;"></div>';
+    $html .= '<div style="page-break-before: always;"></div>';
     /**
      * Заявление на общажитие
      */
