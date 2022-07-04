@@ -4,12 +4,14 @@ use RedBeanPHP\R;
 
 /** @var Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface $cache */
 
+$is_import = $is_import ?? null;
+
 $isData = $_REQUEST['isData'] ?? '1'; // Приемные компании на текущий год
 
 if ($isData === '1') {
-    $cached_string = $cache->getItem('company_' . date('Y'));
+    $cached_string = $cache->getItem('company_' . date('Y') . $is_import);
 } else {
-    $cached_string = $cache->getItem('companies');
+    $cached_string = $cache->getItem('companies' . $is_import);
 }
 
 if ($cached_string->isHit()) {
@@ -65,6 +67,7 @@ for ($i = 0; $i < count($context); $i++) {
                     $statement_table->number = $_abitur['Number'];
                     $statement_table->bal = $_abitur['СреднийБаллАттестата'];
                     $statement_table->copyatistat = $_abitur['КопияАттестата'];
+                    if ($is_import) $statement_table->data = json_encode($_abitur);
                     $id = R::store( $statement_table );
                 }
             }
@@ -87,6 +90,7 @@ for ($i = 0; $i < count($context); $i++) {
             $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['Number'] = $data->number;
             $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['СреднийБаллАттестата'] = $data->bal;
             $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['КопияАттестата'] = $data->copyatistat;
+            if ($is_import) $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['data'] = json_decode($data->data, true);
             $number++;
         }
 

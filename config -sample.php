@@ -12,4 +12,7 @@ const TYPE_CACHE = 'files';
 const CACHE_HOST = '127.0.0.1';
 const CACHE_POST = '6379';
 
+const FIS_LOGIN = 'test';
+const FIS_PASS = 'test';
+
 const DEBUG = true;

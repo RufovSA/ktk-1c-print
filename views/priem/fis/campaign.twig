@@ -1,0 +1,28 @@
+<Root>
+    <AuthData>
+        <Login>{{ fis_login }}</Login>
+        <Pass>{{ fis_pass }}</Pass>
+    </AuthData>
+    <PackageData>
+        <CampaignInfo>
+            <Campaigns>
+                {% for company in companies %}
+                <Campaign>
+                    <UID>{{ company.Code }}</UID>
+                    <Name>{{ company.Description }}</Name>
+                    <YearStart>2022</YearStart>
+                    <YearEnd>2022</YearEnd>
+                    <EducationForms>
+                        <EducationFormID>11</EducationFormID>
+                    </EducationForms>
+                    <StatusID>1</StatusID>
+                    <EducationLevels>
+                        <EducationLevelID>17</EducationLevelID>
+                    </EducationLevels>
+                    <CampaignTypeID>3</CampaignTypeID>
+                </Campaign>
+                {% endfor %}
+            </Campaigns>
+        </CampaignInfo>
+    </PackageData>
+</Root>
