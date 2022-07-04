@@ -6,12 +6,11 @@
     <PackageData>
         <CampaignInfo>
             <Campaigns>
-                {% for company in companies %}
                 <Campaign>
-                    <UID>{{ company.Code }}</UID>
-                    <Name>{{ company.Description }}</Name>
-                    <YearStart>2022</YearStart>
-                    <YearEnd>2022</YearEnd>
+                    <UID>{{ Code }}</UID>
+                    <Name>{{ Description }}</Name>
+                    <YearStart>{{ ГодНачала }}</YearStart>
+                    <YearEnd>{{ ГодОкончания }}</YearEnd>
                     <EducationForms>
                         <EducationFormID>11</EducationFormID>
                     </EducationForms>
@@ -21,8 +20,53 @@
                     </EducationLevels>
                     <CampaignTypeID>3</CampaignTypeID>
                 </Campaign>
-                {% endfor %}
             </Campaigns>
         </CampaignInfo>
+        <AdmissionInfo>
+            <AdmissionVolume>
+                {% for item in admission %}
+                <Item>
+                    <UID>{{ ГодНачала }}_{{ item.id }}</UID>
+                    <CampaignUID>000000001</CampaignUID>
+                    <EducationLevelID>17</EducationLevelID>
+                    <DirectionID>{{ item.КодЭлемента }}</DirectionID>
+                    <NumberBudgetO>{{ item.План }}</NumberBudgetO>
+                    <NumberBudgetOZ>0</NumberBudgetOZ>
+                    <NumberBudgetZ>0</NumberBudgetZ>
+                    <NumberPaidO>0</NumberPaidO>
+                    <NumberPaidOZ>0</NumberPaidOZ>
+                    <NumberPaidZ>0</NumberPaidZ>
+                    <NumberTargetO>0</NumberTargetO>
+                    <NumberTargetOZ>0</NumberTargetOZ>
+                    <NumberTargetZ>0</NumberTargetZ>
+                    <NumberQuotaO>0</NumberQuotaO>
+                    <NumberQuotaOZ>0</NumberQuotaOZ>
+                    <NumberQuotaZ>0</NumberQuotaZ>
+                    <IsPlan>true</IsPlan>
+                    <IsUGS>false</IsUGS>
+                </Item>
+                {% endfor %}
+            </AdmissionVolume>
+            <CompetitiveGroups>
+                {% for item in admission %}
+                <CompetitiveGroup>
+                    <UID>{{ ГодНачала }}_{{ item.id }}</UID>
+                    <CampaignUID>{{ Code }}</CampaignUID>
+                    <Name>{{ item.ПрефиксУчебныхГрупп }}</Name>
+                    <EducationLevelID>17</EducationLevelID>
+                    <EducationSourceID>14</EducationSourceID>
+                    <EducationFormID>11</EducationFormID>
+                    <DirectionID>{{ item.КодЭлемента }}</DirectionID>
+                    <LevelBudget>2</LevelBudget>
+                    <StudyPeriod>34</StudyPeriod>
+                    <StudyBeginningDate>{{ ГодНачала }}-09-01T00:00:00</StudyBeginningDate>
+                    <StudyEndingDate>{{ ГодНачала + 3 }}-06-30T00:00:00</StudyEndingDate>
+                    <CompetitiveGroupItem>
+                        <NumberBudgetO>{{ item.План }}</NumberBudgetO>
+                    </CompetitiveGroupItem>
+                </CompetitiveGroup>
+                {% endfor %}
+            </CompetitiveGroups>
+        </AdmissionInfo>
     </PackageData>
 </Root>

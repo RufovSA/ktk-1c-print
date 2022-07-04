@@ -5,76 +5,74 @@
     </AuthData>
     <PackageData>
         <Applications>
-            {% for company in companies %}
-                {% for planPriem in company.ПланПриема %}
-                    {% for statement in planPriem.Абитуриенты %}
-                    <Application><!-- Заявление от абитуриента -->
-                        <UID>KTK_{{ statement.Code }}</UID>
-                        <ApplicationNumber>KTK_{{ statement.Code }}</ApplicationNumber>
-                        <Entrant>
-                            <UID>KTK_Entrant_{{ statement.Code }}</UID>
-                            <LastName>Лаврухина</LastName>
-                            <FirstName>Мария</FirstName>
-                            <MiddleName>Николаевна</MiddleName>
-                            <GenderID>2</GenderID>
-                            <SNILS>17879512336</SNILS>
-                            <CustomInformation></CustomInformation>
-                            <EmailOrMailAddress>
-                                <Email>RIA.LAVVVR@GMAIL.COM</Email>
-                                <MailAddress>
-                                    <RegionID>40</RegionID>
-                                    <TownTypeID>4</TownTypeID>
-                                    <Address>249217, Калужская обл, Бабынинский р-н, Садовый п, дом № 12, квартира 2</Address>
-                                </MailAddress>
-                            </EmailOrMailAddress>
-                        </Entrant>
-                        <RegistrationDate>2022-06-01T10:39:10</RegistrationDate>
-                        <NeedHostel>true</NeedHostel>
-                        <StatusID>4</StatusID>
-                        <FinSourceAndEduForms>
-                            <FinSourceEduForm>
-                                <CompetitiveGroupUID>{{ planPriem.ПрограммаОбучения.Специальность }}</CompetitiveGroupUID>
-                                <IsAgreedDate>2022-06-01T10:39:10</IsAgreedDate>
-                            </FinSourceEduForm>
-                        </FinSourceAndEduForms>
-                        <ApplicationDocuments>
-                            <IdentityDocument>
-                                <UID>KTK_IdentityDocument_000000001</UID>
-                                <OriginalReceivedDate>2022-06-01</OriginalReceivedDate>
-                                <LastName>Лаврухина</LastName>
-                                <FirstName>Мария</FirstName>
-                                <MiddleName>Николаевна</MiddleName>
-                                <GenderID>2</GenderID>
-                                <DocumentSeries>2918</DocumentSeries>
-                                <DocumentNumber>898031</DocumentNumber>
-                                <SubdivisionCode>400-002</SubdivisionCode>
-                                <DocumentDate>2019-03-27</DocumentDate>
-                                <DocumentOrganization>УМВД РОССИИ ПО КАЛУЖСКОЙ ОБЛАСТИ</DocumentOrganization>
-                                <IdentityDocumentTypeID>1</IdentityDocumentTypeID>
-                                <NationalityTypeID>1</NationalityTypeID>
-                                <BirthDate>2005-03-20</BirthDate>
-                                <BirthPlace>город Калуга Россия</BirthPlace>
-                                <ReleaseCountryID>1</ReleaseCountryID>
-                                <ReleasePlace>УМВД РОССИИ ПО КАЛУЖСКОЙ ОБЛАСТИ</ReleasePlace>
-                            </IdentityDocument>
-                            <EduDocuments>
-                                <EduDocument>
-                                    <SchoolCertificateBasicDocument>
-                                        <UID>KTK_EduDocument_000000001</UID>
-                                        <OriginalReceivedDate>2022-06-01</OriginalReceivedDate>
-                                        <DocumentSeries>0400</DocumentSeries>
-                                        <DocumentNumber>4000015197</DocumentNumber>
-                                        <DocumentDate>2021-09-06</DocumentDate>
-                                        <DocumentOrganization>МОУ "СОШ №2" п. Бабынино Бабынинского района Калужской области</DocumentOrganization>
-                                        <EndYear>2021</EndYear>
-                                        <GPA>4.375</GPA>
-                                    </SchoolCertificateBasicDocument>
-                                </EduDocument>
-                            </EduDocuments>
-                        </ApplicationDocuments>
-                    </Application>
-                    {% endfor %}
-                {% endfor %}
+            {% for statement in statements %}
+            <Application>
+                <UID>KTK_{{ statement.Number }}</UID>
+                <ApplicationNumber>KTK_{{ statement.Number }}</ApplicationNumber>
+                <Entrant>
+                    <UID>KTK_Entrant_{{ statement.Number }}</UID>
+                    <LastName>{{ statement.Фамилия }}</LastName>
+                    <FirstName>{{ statement.Имя }}</FirstName>
+                    <MiddleName>{{ statement.Отчество }}</MiddleName>
+                    <GenderID>{{ statement.Пол }}</GenderID>
+                    <SNILS>{{ statement.СтраховойНомерПФР }}</SNILS>
+                    <CustomInformation>{{ statement.ДополнительныеСведения }}</CustomInformation>
+                    <EmailOrMailAddress>
+                        <Email>{{ statement.Email }}</Email>
+                        <MailAddress>
+                            <RegionID>{{ statement.RegionID }}</RegionID>
+                            <TownTypeID>{{ statement.TownTypeID }}</TownTypeID>
+                            <Address>{{ statement.Address }}</Address>
+                        </MailAddress>
+                    </EmailOrMailAddress>
+                </Entrant>
+                <RegistrationDate>{{ statement.Date }}</RegistrationDate>
+                <NeedHostel>{% if statement.ТребуетсяОбщежитие %}true{% else %}false{% endif %}</NeedHostel>
+                <StatusID>4</StatusID>
+                <FinSourceAndEduForms>
+                    <FinSourceEduForm>
+                        <CompetitiveGroupUID>{{ year }}_{{ statement.Специальность.Ref_Key }}</CompetitiveGroupUID>
+                        <IsAgreedDate>{{ statement.Date }}</IsAgreedDate>
+                    </FinSourceEduForm>
+                </FinSourceAndEduForms>
+                <ApplicationDocuments>
+                    <IdentityDocument>
+                        <UID>KTK_IdentityDocument_{{ statement.Number }}</UID>
+                        <OriginalReceivedDate>{{ statement.OriginalReceivedDate }}</OriginalReceivedDate>
+                        <LastName>{{ statement.Фамилия }}</LastName>
+                        <FirstName>{{ statement.Имя }}</FirstName>
+                        <MiddleName>{{ statement.Отчество }}</MiddleName>
+                        <GenderID>{{ statement.Пол }}</GenderID>
+                        <DocumentSeries>{{ statement.СерияДокументаУдостоверяющегоЛичность }}</DocumentSeries>
+                        <DocumentNumber>{{ statement.НомерДокументаУдостоверяющегоЛичность }}</DocumentNumber>
+                        {% if statement.КодПодразделенияДокументУдостоверяющийЛичность != '' %}
+                            <SubdivisionCode>{{ statement.КодПодразделенияДокументУдостоверяющийЛичность }}</SubdivisionCode>
+                        {% endif %}
+                        <DocumentDate>{{ statement.ДатаВыдачиДокументаУдостоверяющегоЛичность }}</DocumentDate>
+                        <DocumentOrganization>{{ statement.КемВыданДокументУдостоверяющийЛичность }}</DocumentOrganization>
+                        <IdentityDocumentTypeID>1</IdentityDocumentTypeID>
+                        <NationalityTypeID>{{ statement.ReleaseCountryID }}</NationalityTypeID>
+                        <BirthDate>{{ statement.ДатаРождения }}</BirthDate>
+                        <BirthPlace>{{ statement.МестоРождения }}</BirthPlace>
+                        <ReleaseCountryID>{{ statement.ReleaseCountryID }}</ReleaseCountryID>
+                        <ReleasePlace>{{ statement.КемВыданДокументУдостоверяющийЛичность }}</ReleasePlace>
+                    </IdentityDocument>
+                    <EduDocuments>
+                        <EduDocument>
+                            <{% if statement.БазовоеОбразование == 'ОсновноеОбщее' %}SchoolCertificateBasicDocument{% else %}SchoolCertificateDocument{% endif %}>
+                                <UID>KTK_EduDocument_{{ statement.Number }}</UID>
+                                <OriginalReceivedDate>{{ statement.OriginalReceivedDate }}</OriginalReceivedDate>
+                                <DocumentSeries>{{ statement.СерияДокументаОбразования }}</DocumentSeries>
+                                <DocumentNumber>{{ statement.НомерДокументаОбразования }}</DocumentNumber>
+                                <DocumentDate>{{ statement.ДатаОкончанияОбразовательнойОрганизации }}</DocumentDate>
+                                <DocumentOrganization>{{ statement.НаименованиеОбразовательнойОрганизации }}</DocumentOrganization>
+                                <EndYear>{{ statement.EndYear }}</EndYear>
+                                <GPA>{{ statement.СреднийБаллАттестата }}</GPA>
+                            </{% if statement.БазовоеОбразование == 'ОсновноеОбщее' %}SchoolCertificateBasicDocument{% else %}SchoolCertificateDocument{% endif %}>
+                        </EduDocument>
+                    </EduDocuments>
+                </ApplicationDocuments>
+            </Application>
             {% endfor %}
         </Applications>
     </PackageData>
