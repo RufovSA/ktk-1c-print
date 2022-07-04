@@ -129,7 +129,7 @@ $data['fis_pass'] = FIS_PASS;
 
 //dump($data);
 
-header('Content-Type: application/xml; charset=utf-8');
+header('Content-Type: text/plain; charset=utf-8');
 $html = $twig->render('priem/fis/statement.twig', $data);
 
 if (!DEBUG) {
