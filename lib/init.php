@@ -32,8 +32,25 @@ if (DEBUG) {
     register_shutdown_function($handler);
 }
 
-$uri = $_GET['q'] ?? '';
+function isSSL() {
+    if( (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) == 'on')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+        || (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
+        || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
+		|| (isset($_SERVER['CF_VISITOR']) && $_SERVER['CF_VISITOR'] == '{"scheme":"https"}')
+		|| (isset($_SERVER['HTTP_CF_VISITOR']) && $_SERVER['HTTP_CF_VISITOR'] == '{"scheme":"https"}')
+    ) return true; else return false;
+}
 
+$php_self = str_replace("\\", '', dirname($_SERVER['PHP_SELF']));
+$uri = substr($_SERVER['REQUEST_URI'], strlen($php_self) + 1);
+if ($pos = strpos($uri, '?')) $uri = substr($uri, 0, $pos);
+
+//$uri = $_GET['q'] ?? '';
+
+$_SERVER['REQUEST_SCHEME'] = isSSL() ? 'https': 'http';
 define('HOME_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
 
 $format = substr($uri, strrpos($uri, '.') + 1);
