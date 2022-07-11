@@ -103,10 +103,6 @@ for ($i = 0; $i < count($context); $i++) {
 }
 $context['updateTime'] = date('d.m.Y H:i:s');
 
-if (!$noCache) {
-    $cache->clear();
-}
-
 //dump($context);
 $cached_string->set($context)->expiresAfter(31536000);
 $cache->save($cached_string);
