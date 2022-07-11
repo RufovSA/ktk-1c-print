@@ -2,6 +2,7 @@
 {% block title %}Рейтинг абитуриентов{% endblock %}
 {% block content %}
     <div class="container">
+        <p>Время обновления рейтинга: {{ updateTime }}</p>
         {% set i = 1 %}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             {% for company in companies %}

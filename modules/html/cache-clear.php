@@ -28,19 +28,20 @@ function Delete(string $path): bool
     return false;
 }
 
-$cache->clear();
+//$cache->clear();
 
-Delete(ROOT_DIR . '/cache/');
+//Delete(ROOT_DIR . '/cache/');
 
 $html = $twig->render('blank.twig', [
     'title' => 'Очистка кеша',
     'typeAlert' => 'success',
-    'description' => 'Очистка кеша успешна выполена'
+    'description' => 'Очистка кеша успешна выполена',
+    'no_metrik' => '1'
 ]);
 
-if (!DEBUG) {
-    echo Optimize::html($html);
-} else {
+//if (!DEBUG) {
+//    echo Optimize::html($html);
+//} else {
     echo $html;
-}
+//}
 

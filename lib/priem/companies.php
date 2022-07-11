@@ -7,6 +7,7 @@ use RedBeanPHP\R;
 $is_import = $is_import ?? null;
 
 $isData = $_REQUEST['isData'] ?? '1'; // Приемные компании на текущий год
+$noCache = $_REQUEST['noCache'] ?? false;
 
 if ($isData === '1') {
     $cached_string = $cache->getItem('company_' . date('Y') . $is_import);
@@ -14,7 +15,7 @@ if ($isData === '1') {
     $cached_string = $cache->getItem('companies' . $is_import);
 }
 
-if ($cached_string->isHit()) {
+if ($cached_string->isHit() && !$noCache) {
     $context = $cached_string->get();
     return;
 }
@@ -100,6 +101,12 @@ for ($i = 0; $i < count($context); $i++) {
     $context[$i]['ВсегоПолученоЗаявленийОриг'] += $context[$i]['ВсегоПосле9клОриг'] + $context[$i]['ВсегоПосле11клОриг'];
     $context[$i]['ВсегоПолученоЗаявленийИтог'] += $context[$i]['ВсегоПолученоЗаявленийКоп'] + $context[$i]['ВсегоПолученоЗаявленийОриг'];
 }
+$context['updateTime'] = date('d.m.Y H:i:s');
+
+if (!$noCache) {
+    $cache->clear();
+}
+
 //dump($context);
-$cached_string->set($context)->expiresAfter(300);
+$cached_string->set($context)->expiresAfter(31536000);
 $cache->save($cached_string);

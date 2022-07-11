@@ -2,7 +2,7 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
     <style>
-        @import url("/css/sweet-alert.css");
+        @import url("/site/css/sweet-alert.css");
         .placeholder{background-color:transparent}
 
         @media (prefers-color-scheme: dark) {
@@ -18,8 +18,92 @@
                 color: #a9a9a9!important;
             }
         }
+
+
+        .loader {
+            display: block;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-origin: 63px 63px;
+            animation: spin 1s infinite linear;
+        }
+        .loader .spinner {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-width: 0px 0px 26px 26px;
+            border-style: solid;
+            border-color: transparent;
+        }
+        .loader .spinner.yellow {
+            border-left-color: #ffff99;
+        }
+        .loader .spinner.orange {
+            border-left-color: #ffcc66;
+            transform: rotate(-45deg);
+        }
+        .loader .spinner.red {
+            border-left-color: #ff9966;
+            transform: rotate(-90deg);
+        }
+        .loader .spinner.pink {
+            border-left-color: #ff6699;
+            transform: rotate(-135deg);
+        }
+        .loader .spinner.violet {
+            border-left-color: #cc66cc;
+            transform: rotate(-180deg);
+        }
+        .loader .spinner.mauve {
+            border-left-color: #cc99cc;
+            transform: rotate(-225deg);
+        }
+        .loader .spinner.light-yellow {
+            border-left-color: #fffad5;
+            transform: rotate(-270deg);
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+        #un_progress {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -50px;
+            margin-left: -50px;
+        }
+
+        #un_progress .text-muted {
+            position: relative;
+            margin-top: 50px;
+            margin-left: -170px;
+        }
     </style>
-    <div class="sweet-alert showSweetAlert visible">
+    <div id="un_progress">
+        <div class='loader'>
+            <div class='spinner yellow'></div>
+            <div class='spinner orange'></div>
+            <div class='spinner red'></div>
+            <div class='spinner pink'></div>
+            <div class='spinner violet'></div>
+            <div class='spinner mauve'></div>
+            <div class='spinner light-yellow'></div>
+        </div>
+        <p class="lead text-muted">Обновление данных на сайте. Пожалуйста подождите</p>
+        <p class="lead text-muted" style="color: red!important">НЕ ОБНОВЛЯЙТЕ СТРАНИЦУ</p>
+    </div>
+    <div id="un_info" class="sweet-alert showSweetAlert visible" style="display: none">
         {% if typeAlert == 'error' %}
             <div class="icon error animateErrorIcon">
             <span class="x-mark">
@@ -47,5 +131,31 @@
         {% endif %}
         <p class="lead text-muted">{{ description }}</p>
     </div>
+    {% autoescape false %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $.ajax({
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
 
+                    xhr.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            //document.getElementById('un_progress').innerHTML = 'Обновление данных на сайте: ' + percentComplete + '%';
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                type: 'GET',
+                url: "/site/priem/table.html?noCache=1",
+                data: {},
+                success: function(data){
+                    document.getElementById('un_progress').style.display = 'none';
+                    document.getElementById('un_info').style.display = 'block';
+                }
+            });
+        });
+    </script>
+    {% endautoescape %}
 {% endblock %}
