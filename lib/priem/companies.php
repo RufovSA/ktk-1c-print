@@ -26,7 +26,8 @@ if ($isData === '1') {
     $context = httpGetContent('Catalog_ПриемныеКампании');
 }
 
-$statement = httpGetContent('Document_АнкетаАбитуриента_ПодачаЗаявлений', "LineNumber eq 1");
+//$statement = httpGetContent('Document_АнкетаАбитуриента_ПодачаЗаявлений', "LineNumber eq 1");
+$statement = httpGetContent('Document_АнкетаАбитуриента_ПодачаЗаявлений');
 
 R::setup('sqlite::memory:');
 
@@ -55,18 +56,24 @@ for ($i = 0; $i < count($context); $i++) {
                 $_abitur = httpGetContentById('Document_АнкетаАбитуриента', $item['Ref_Key']);
                 if (!$_abitur['ДокументыВозвращены']) {
                     $_abitur['КопияАттестата'] = '0';
-                    for ($cc = 0; $cc < count($_abitur['ДокументыДляПоступления']); $cc++) {
-                        $data = httpGetContentById('Catalog_ДокументыДляПоступления', $_abitur['ДокументыДляПоступления'][$cc]['ДокументДляПоступления_Key']);
-                        if ($data['ТипДокумента'] == 'ДокументОбОбразовании') {
-                            $_abitur['КопияАттестата'] = $_abitur['ДокументыДляПоступления'][$cc]['ПредоставленаКопия'];
-                            break;
+                    if ($item['LineNumber'] == '1') {
+                        for ($cc = 0; $cc < count($_abitur['ДокументыДляПоступления']); $cc++) {
+                            $data = httpGetContentById('Catalog_ДокументыДляПоступления', $_abitur['ДокументыДляПоступления'][$cc]['ДокументДляПоступления_Key']);
+                            if ($data['ТипДокумента'] == 'ДокументОбОбразовании') {
+                                $_abitur['КопияАттестата'] = $_abitur['ДокументыДляПоступления'][$cc]['ПредоставленаКопия'];
+                                break;
+                            }
                         }
+                    } else {
+                        $_abitur['КопияАттестата'] = '1';
                     }
+
                     if ($_abitur['КопияАттестата']) $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоКопий']++;
                     else $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоОригиналов']++;
                     $statement_table = R::dispense( 'statement' );
                     $statement_table->number = $_abitur['Number'];
                     $statement_table->bal = $_abitur['СреднийБаллАттестата'];
+                    $statement_table->LineNumber = $item['LineNumber'];
                     $statement_table->copyatistat = $_abitur['КопияАттестата'];
                     if ($is_import) $statement_table->data = json_encode($_abitur);
                     $id = R::store( $statement_table );
@@ -90,6 +97,7 @@ for ($i = 0; $i < count($context); $i++) {
         foreach ($dates as $data) {
             $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['Number'] = $data->number;
             $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['СреднийБаллАттестата'] = $data->bal;
+            $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['LineNumber'] = $data->LineNumber;
             $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['КопияАттестата'] = $data->copyatistat;
             if ($is_import) $context[$i]['ПланПриема'][$j]['Абитуриенты'][$number]['data'] = json_decode($data->data, true);
             $number++;

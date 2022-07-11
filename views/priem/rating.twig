@@ -52,22 +52,28 @@
                     {% for planPriem in company.ПланПриема %}
                         <div id="plan{{ planPriem.ПрограммаОбучения.Code }}" class="container-plan"{% if j != 1 %} style="display: none"{% endif %}>
                             <h3 class="text-center">Количество бюджетных мест: {{ planPriem.Данные[0].План }}</h3>
+                            <p>
+                                <span style="display: inline-block;background-color:#f5c6cb; width: 16px; height: 16px"></span>
+                                - Абитуриенты, подавшие оригиналы документов
+                            </p>
                             <table id="tableplan{{ planPriem.ПрограммаОбучения.Code }}" class="data-table display">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Место в рейтинге</th>
                                         <th class="text-center">ID Заявления</th>
                                         <th class="text-center">Средний балл</th>
+                                        <th class="text-center">Приоритет</th>
                                         <th class="text-center">Копия</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% set place = 1 %}
                                     {% for statement in planPriem.Абитуриенты %}
-                                        <tr>
+                                        <tr {% if statement.КопияАттестата != '1' %}style="background-color:#f5c6cb"{% endif %}>
                                             <td class="text-center">{{ place }}</td>
                                             <td class="text-center">{{ statement.Number }}</td>
                                             <td class="text-center">{{ statement.СреднийБаллАттестата }}</td>
+                                            <td class="text-center">{{ statement.LineNumber }}</td>
                                             <td class="text-center">{% if statement.КопияАттестата %}&#10004;{% endif %}</td>
                                         </tr>
                                         {% if statement.КопияАттестата != '1' %}
