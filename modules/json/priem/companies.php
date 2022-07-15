@@ -13,4 +13,7 @@ header('Content-type: application/json; charset=utf-8');
 
 require_once ROOT_DIR . '/lib/priem/companies.php';
 
-echo json_encode($context);
+echo json_encode(array(
+    'status' => true,
+    'response' => $context
+));
