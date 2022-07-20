@@ -1,0 +1,50 @@
+<h1 align="center">Протокол родительского собрания</h1>
+<p align="center">№ <u>{{ Number }}</u> от {{ Date }}, группы <u>{{ УчебнаяГруппа.Description }}</u></p>
+<table width="100%">
+    <tr>
+        <td>Планируемая дата проведения: <u>{{ ПланируемаяДатаПроведения }}</u></td>
+        <td>Фактическая дата проведения: <u>{{ ФактическаяДатаПроведения }}</u></td>
+    </tr>
+</table>
+<p>Повестки собрания:</p>
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>№</th>
+        <th>Тема</th>
+        <th>Выступил</th>
+        <th>Обсуждена</th>
+    </tr>
+    {% for thema in Темы %}
+    <tr>
+        <td>{{ thema.LineNumber }}</td>
+        <td>{{ thema.Тема }}</td>
+        <td>{{ thema.Комментарий }}</td>
+        <td align="center" style="font-family: DejaVu Sans, sans-serif;">{% if thema.Обсуждена %}&#10004;{% else %}&#10008;{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>Присутствовало человек: <u>{{ attended }}</u></p>
+<p>Индивидуальные беседы:</p>
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th>№</th>
+        <th>С родителем студента</th>
+        <th>Тема</th>
+        <th>Беседа состоялась</th>
+    </tr>
+    {% for discussion in ИндивидуальныеБеседы %}
+    <tr>
+        <td>{{ discussion.LineNumber }}</td>
+        <td>{{ discussion.student.Description }}</td>
+        <td>{{ discussion.НаТему }}</td>
+        <td align="center" style="font-family: DejaVu Sans, sans-serif;">{% if discussion.БеседаСостоялась %}&#10004;{% else %}&#10008;{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>Решение собрания:</p>
+<p>{{ РешениеСобрания }}</p>
+<p><b>Классный руководитель</b> {{ Куратор.Description }} / ____________________</p>
+<p>Представители родительского комитета (ФИО, подпись):</p>
+<p>1. __________________ / _________________</p>
+<p>2. __________________ / _________________</p>
+<p>3. __________________ / _________________</p>

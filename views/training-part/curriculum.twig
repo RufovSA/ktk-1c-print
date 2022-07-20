@@ -6,10 +6,18 @@
             padding: 0;
         }
     </style>
+    {% if СтатусПлана == 'Черновик' or СтатусПлана == '' %}
+        <div style="position: fixed; color: #ccc; top: 50%; left: 50%; font-size: 202px;-moz-transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+margin-left: -500px;margin-top: -200px;opacity: 0.3">Черновик</div>
+    {% endif %}
     <div style="text-align: right"><b>Утверждаю:</b></div>
     <div style="text-align: right">Директор {{ company_name_brief }}</div>
     <div style="text-align: right">_______________ / {{ company_director }}</div>
-    <div style="text-align: right">Приказ № ___ от {{ ДатаУтверждения }} г.</div>
+    <div style="text-align: right">Приказ № {{ НомерПриказа }} от {{ ДатаУтверждения }} г.</div>
 
     <h1 style="text-align: center; margin-top: 100px;">УЧЕБНЫЙ ПЛАН</h1>
     <div style="text-align: center;"><b>образовательной программы среднего профессионального образования -</b></div>
