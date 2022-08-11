@@ -15,6 +15,7 @@ echo 6. GitHub Desctop
 echo 7. Яндекс Браузер
 echo 8. Notepad++
 echo 9. Диспетчер задач
+echo 10. pgAdmin
 echo 0. Выход
 echo.
 
@@ -90,6 +91,14 @@ if %Data% EQU 9 (
     echo Запуск Диспетчер задач
     echo Пожалуйста подождите...
     start taskmgr
+    pause
+)
+
+if %Data% EQU 10 (
+    cls
+    echo Запуск pgAdmin
+    echo Пожалуйста подождите...
+    start "pgAdmin4" "C:\Program Files\pgAdmin 4\v6\runtime\pgAdmin4.exe"
     pause
 )
 

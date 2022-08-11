@@ -88,9 +88,18 @@ for ($i = 0; $i < count($context); $i++) {
 
                     if ($_abitur['КопияАттестата']) $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоКопий']++;
                     else $context[$i]['ПланПриема'][$j]['ПрограммаОбучения']['КолВоОригиналов']++;
+                    
+                    $myBal = $_abitur['СреднийБаллАттестата'];
+                    if ($_abitur['Комментарий'] == 'АВН') {
+                        $myBal += 1.2;
+                        if ($myBal >= 4.5) {
+                            $myBal = 4.5;
+                        }
+                    }
+                    
                     $statement_table = R::dispense( 'statement' );
                     $statement_table->number = $_abitur['Number'];
-                    $statement_table->bal = $_abitur['СреднийБаллАттестата'];
+                    $statement_table->bal = $myBal;//$_abitur['СреднийБаллАттестата'];
                     $statement_table->LineNumber = $item['LineNumber'];
                     $statement_table->copyatistat = $_abitur['КопияАттестата'];
                     if ($is_import) $statement_table->data = json_encode($_abitur);

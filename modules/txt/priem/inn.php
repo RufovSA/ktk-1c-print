@@ -7,8 +7,8 @@ if (
     !isset($_POST['docno']) ||
     !isset($_POST['docdt'])
 ) {
-    require_once ROOT_DIR . '/modules/404.php';
-    exit();
+    //require_once ROOT_DIR . '/modules/404.php';
+    //exit();
 }
 
 function suggestInn($surname, $name, $patronymic, $birthdate, $doctype, $docnumber, $docdate)
