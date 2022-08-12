@@ -45,7 +45,8 @@
     "twig/twig": "^3.0",
     "ext-curl": "*",
     "kilylabs/odata-1c": "^1.2",
-    "gabordemooij/redbean": "^5.7"
+    "gabordemooij/redbean": "^5.7",
+    "phpoffice/phpword": "^0.18.3"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.5 || ^8 || ^9",
